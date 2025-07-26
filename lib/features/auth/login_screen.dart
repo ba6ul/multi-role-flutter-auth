@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:multi_role_flutter_auth/onboarding/role_selection_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'signup_screen.dart';
-import 'dashboard_router.dart';
-import '../models/user_role.dart';
+//import 'signup_screen.dart';
+import '../../dashboard/dashboard_router.dart';
+import '../../models/user_role.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -209,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SignupScreen(),
+                            builder: (context) => RoleSelectionPage(),
                           ),
                         );
                       },

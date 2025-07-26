@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:multi_role_flutter_auth/pages/login_screen.dart';
+import 'package:multi_role_flutter_auth/features/auth/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {

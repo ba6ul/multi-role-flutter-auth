@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_role_flutter_auth/features/auth/signup_screen.dart';
 import '../models/user_role.dart';
 import 'profile_setup_page.dart';
 
@@ -7,12 +8,17 @@ import 'profile_setup_page.dart';
 /// This page displays a list of user roles (defined in [UserRole]) that the user
 /// can choose from during the onboarding or registration process.
 ///
-/// Once a role is selected, the user is navigated to [ProfileSetupPage] to complete
-/// their profile setup (name, DOB, etc.). The selected role is passed forward for saving.
+/// Once a role is selected, the user is navigated to [SignupScreen] to enter their
+/// email and password. The selected role is passed forward through the registration process.
+///
+/// After successful signup, the user proceeds to [ProfileSetupPage] to complete
+/// their profile setup (name, DOB, etc.).
 ///
 /// Related files:
 /// - user_role.dart
+/// - signup_screen.dart
 /// - profile_setup_page.dart
+
 class RoleSelectionPage extends StatelessWidget {
   const RoleSelectionPage({super.key});
 
@@ -94,7 +100,7 @@ class RoleSelectionPage extends StatelessWidget {
                 ),
               ),
               
-              // Centered roles list
+              // roles list
               Expanded(
                 child: Center(
                   child: ConstrainedBox(
@@ -110,9 +116,6 @@ class RoleSelectionPage extends StatelessWidget {
                   ),
                 ),
               ),
-              
-              // Footer
-              
             ],
           ),
         ),
@@ -226,12 +229,14 @@ class RoleSelectionPage extends StatelessWidget {
     }
   }
 
-  void _handleRoleSelection(BuildContext context, UserRole role) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProfileSetupPage(selectedRole: role),
-      ),
-    );
-  }
+ void _handleRoleSelection(BuildContext context, UserRole role) {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (_) => SignupScreen(selectedRole: role),
+    ),
+  );
 }
+
+}
+

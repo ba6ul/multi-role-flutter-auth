@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:multi_role_flutter_auth/onboarding/profile_setup_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'login_screen.dart';
-import 'role_selection_page.dart';
+//import '../../onboarding/role_selection_page.dart';
+import 'package:multi_role_flutter_auth/models/user_role.dart';
+
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+  final UserRole selectedRole;
+
+  const SignupScreen({super.key, required this.selectedRole});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -41,11 +46,11 @@ class _SignupScreenState extends State<SignupScreen> {
       );
 
       if (response.user != null && mounted) {
-        // Navigate to role selection
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const RoleSelectionPage(),
+            builder: (context) =>
+                ProfileSetupPage(selectedRole: widget.selectedRole),
           ),
         );
       }
@@ -88,16 +93,16 @@ class _SignupScreenState extends State<SignupScreen> {
                 Text(
                   'Create Account',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Sign up to get started',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 32),
@@ -116,8 +121,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
                     }
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                        .hasMatch(value)) {
+                    if (!RegExp(
+                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                    ).hasMatch(value)) {
                       return 'Please enter a valid email';
                     }
                     return null;
@@ -194,9 +200,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ? const SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Text('Create Account'),
                 ),
@@ -211,14 +215,16 @@ class _SignupScreenState extends State<SignupScreen> {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     TextButton(
-                      onPressed: _isLoading ? null : () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                        );
-                      },
+                      onPressed: _isLoading
+                          ? null
+                          : () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginScreen(),
+                                ),
+                              );
+                            },
                       child: const Text('Sign in'),
                     ),
                   ],
