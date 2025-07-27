@@ -10,6 +10,8 @@ class LoginScreen extends StatefulWidget {
   // For easy customization:
   static const Color primaryColor = Colors.pink;
   static const String appName = "Your App Name";
+  static const String subTitle = "Let's get Started";
+    static const String Title = "Welcome Back";
   static const IconData appIcon = Icons.login_rounded;
 
   @override
@@ -90,21 +92,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: const Text(
-          'Welcome Back',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.grey[800],
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(height: 1, color: Colors.grey[200]),
-        ),
-      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -176,37 +163,41 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Customizable app branding section
+  // App branding section
   Widget _buildAppBranding(BuildContext context) {
     return Column(
-      children: [
-        // App logo/icon (easily customizable)
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.blue.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: const Icon(
-            Icons.login_rounded, // Can be changed to app logo
-            size: 32,
-            color: Colors.blue,
-          ),
+    children: [
+      // Big title text (to use icon ucomment const Text)
+      const Text(
+        LoginScreen.Title,
+        style: TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
         ),
-        const SizedBox(height: 16),
+      ),
+      /*
+      const Icon(
+        Icons.login_rounded, // You can replace this with your logo or another icon
+        size: 32,
+        color: Colors.blue,
+      ),
+      */
 
-        // Welcome message (customizable)
-        const Text(
-          'Sign in to your account',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black87,
-            fontWeight: FontWeight.w500,
-          ),
-          textAlign: TextAlign.center,
+      const SizedBox(height: 16),
+
+      // Subtitle message (customizable)
+      Text(
+        LoginScreen.subTitle,
+        style: const TextStyle(
+          fontSize: 16,
+          color: Colors.black87,
+          fontWeight: FontWeight.w500,
         ),
-      ],
-    );
+        textAlign: TextAlign.center,
+      ),
+    ],
+  );
   }
 
   // Reusable email field
