@@ -35,25 +35,11 @@ class RoleSelectionPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text(
-          'Select Your Role',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.grey[800],
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(
-            height: 1,
-            color: Colors.grey[200],
-          ),
-        ),
+        leading: const BackButton(),
       ),
+
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -99,7 +85,7 @@ class RoleSelectionPage extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // roles list
               Expanded(
                 child: Center(
@@ -144,11 +130,7 @@ class RoleSelectionPage extends StatelessWidget {
                     color: _getRoleColor(role).withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(
-                    role.icon,
-                    size: 28,
-                    color: _getRoleColor(role),
-                  ),
+                  child: Icon(role.icon, size: 28, color: _getRoleColor(role)),
                 ),
                 const SizedBox(width: 18),
                 Expanded(
@@ -208,7 +190,7 @@ class RoleSelectionPage extends StatelessWidget {
       case UserRole.superadmin:
         return Colors.red;
       //default:
-        //return Colors.blue;
+      //return Colors.blue;
     }
   }
 
@@ -225,18 +207,14 @@ class RoleSelectionPage extends StatelessWidget {
       case UserRole.superadmin:
         return 'Complete system control';
       //default:
-        //return 'Role description';
+      //return 'Role description';
     }
   }
 
- void _handleRoleSelection(BuildContext context, UserRole role) {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (_) => SignupScreen(selectedRole: role),
-    ),
-  );
+  void _handleRoleSelection(BuildContext context, UserRole role) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => SignupScreen(selectedRole: role)),
+    );
+  }
 }
-
-}
-
