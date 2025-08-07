@@ -68,6 +68,8 @@ extension UserRoleExtension on UserRole {
   // Helper for parsing from string value (db value)
   static UserRole? fromDbValue(String? value) {
     switch (value) {
+      case 'guest':
+        return UserRole.guest;
       case 'driver_individual':
         return UserRole.guest;
       case 'member':
