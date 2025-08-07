@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:multi_role_flutter_auth/dashboard/presentation/widgets/auth/password_field.dart';
 import 'package:multi_role_flutter_auth/onboarding/role_selection_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../dashboard/dashboard_router.dart';
 import '../../models/user_role.dart';
+import 'package:multi_role_flutter_auth/dashboard/presentation/widgets/auth/email_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   // For easy customization:
-  static const Color primaryColor = Colors.pink;
-  static const String appName = "Your App Name";
+  //static const Color primaryColor = Colors.pink;
+  //static const String appName = "Your App Name";
   static const String subTitle = "Let's get Started";
-    static const String Title = "Welcome Back";
+  static const String Title = "Welcome Back";
   static const IconData appIcon = Icons.login_rounded;
 
   @override
@@ -124,12 +126,37 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 32),
 
                         // Email Field
-                        _buildEmailField(),
+                        EmailField(
+                          controller: _emailController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            if (!RegExp(
+                              r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                            ).hasMatch(value)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                        ),
 
                         const SizedBox(height: 16),
 
                         // Password Field
-                        _buildPasswordField(),
+                        PasswordField(
+                          controller: _passwordController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            if (value.length < 6) {
+                              return 'Password must be at least 6 characters';
+                            }
+                            return null;
+                          },
+                          onFieldSubmitted: (_) => _login(),
+                        ),
 
                         const SizedBox(height: 24),
 
@@ -166,93 +193,39 @@ class _LoginScreenState extends State<LoginScreen> {
   // App branding section
   Widget _buildAppBranding(BuildContext context) {
     return Column(
-    children: [
-      // Big title text (to use icon ucomment const Text)
-      const Text(
-        LoginScreen.Title,
-        style: TextStyle(
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
+      children: [
+        // Big title text (to use icon ucomment const Text)
+        const Text(
+          LoginScreen.Title,
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
-      ),
-      /*
+
+        /*
       const Icon(
         Icons.login_rounded, // You can replace this with your logo or another icon
         size: 32,
         color: Colors.blue,
       ),
       */
+        const SizedBox(height: 16),
 
-      const SizedBox(height: 16),
-
-      // Subtitle message (customizable)
-      Text(
-        LoginScreen.subTitle,
-        style: const TextStyle(
-          fontSize: 16,
-          color: Colors.black87,
-          fontWeight: FontWeight.w500,
+        // Subtitle message
+        Text(
+          LoginScreen.subTitle,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.black87,
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
         ),
-        textAlign: TextAlign.center,
-      ),
-    ],
-  );
-  }
-
-  // Reusable email field
-  Widget _buildEmailField() {
-    return TextFormField(
-      controller: _emailController,
-      keyboardType: TextInputType.emailAddress,
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        labelText: 'Email',
-        hintText: 'Enter your email address',
-        prefixIcon: const Icon(Icons.email_outlined),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        filled: true,
-        fillColor: Colors.grey[50],
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your email';
-        }
-        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-          return 'Please enter a valid email';
-        }
-        return null;
-      },
+      ],
     );
   }
-
-  // Reusable password field
-  Widget _buildPasswordField() {
-    return TextFormField(
-      controller: _passwordController,
-      obscureText: true,
-      textInputAction: TextInputAction.done,
-      decoration: InputDecoration(
-        labelText: 'Password',
-        hintText: 'Enter your password',
-        prefixIcon: const Icon(Icons.lock_outline),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        filled: true,
-        fillColor: Colors.grey[50],
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your password';
-        }
-        if (value.length < 6) {
-          return 'Password must be at least 6 characters';
-        }
-        return null;
-      },
-      onFieldSubmitted: (_) => _login(),
-    );
-  }
-
   // Reusable error message widget
   Widget _buildErrorMessage() {
     return Container(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:multi_role_flutter_auth/dashboard/presentation/widgets/auth/email_field.dart';
+import 'package:multi_role_flutter_auth/dashboard/presentation/widgets/auth/password_field.dart';
 import 'package:multi_role_flutter_auth/onboarding/profile_setup_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'login_screen.dart';
@@ -91,10 +93,7 @@ class _SignupScreenState extends State<SignupScreen> {
       appBar: AppBar(
         title: const Text(
           'Create Account',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
         ),
         backgroundColor: Colors.white,
         foregroundColor: Colors.grey[800],
@@ -102,10 +101,7 @@ class _SignupScreenState extends State<SignupScreen> {
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Container(
-            height: 1,
-            color: Colors.grey[200],
-          ),
+          child: Container(height: 1, color: Colors.grey[200]),
         ),
       ),
       body: SafeArea(
@@ -138,7 +134,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: _getRoleColor(widget.selectedRole).withOpacity(0.1),
+                            color: _getRoleColor(
+                              widget.selectedRole,
+                            ).withOpacity(0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
@@ -163,19 +161,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         const SizedBox(height: 24),
 
                         // Email Field
-                        TextFormField(
+                        EmailField(
                           controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            prefixIcon: const Icon(Icons.email_outlined),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[50],
-                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
@@ -191,19 +178,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         const SizedBox(height: 16),
 
                         // Password Field
-                        TextFormField(
+                        PasswordField(
                           controller: _passwordController,
-                          obscureText: true,
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            prefixIcon: const Icon(Icons.lock_outline),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[50],
-                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a password';
@@ -213,23 +189,14 @@ class _SignupScreenState extends State<SignupScreen> {
                             }
                             return null;
                           },
-                        ),
-                        const SizedBox(height: 16),
 
+                        ),
+                        const SizedBox(height: 24),
                         // Confirm Password Field
-                        TextFormField(
+                        PasswordField(
                           controller: _confirmPasswordController,
-                          obscureText: true,
-                          textInputAction: TextInputAction.done,
-                          decoration: InputDecoration(
-                            labelText: 'Confirm Password',
-                            prefixIcon: const Icon(Icons.lock_outline),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[50],
-                          ),
+                          labelText: 'Confirm Password',
+                          hintText: 'Re-enter your password',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please confirm your password';
@@ -241,6 +208,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           },
                           onFieldSubmitted: (_) => _signup(),
                         ),
+
                         const SizedBox(height: 24),
 
                         // Error Message
@@ -270,7 +238,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: ElevatedButton(
                             onPressed: _isLoading ? null : _signup,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: _getRoleColor(widget.selectedRole),
+                              backgroundColor: _getRoleColor(
+                                widget.selectedRole,
+                              ),
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -283,7 +253,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                     width: 20,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white,
+                                      ),
                                     ),
                                   )
                                 : const Text(
@@ -315,18 +287,19 @@ class _SignupScreenState extends State<SignupScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const LoginScreen(),
+                                          builder: (context) =>
+                                              const LoginScreen(),
                                         ),
                                       );
                                     },
                               style: TextButton.styleFrom(
-                                foregroundColor: _getRoleColor(widget.selectedRole),
+                                foregroundColor: _getRoleColor(
+                                  widget.selectedRole,
+                                ),
                               ),
                               child: const Text(
                                 'Sign in',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.w600),
                               ),
                             ),
                           ],
