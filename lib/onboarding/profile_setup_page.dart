@@ -204,27 +204,27 @@ final _formKey = GlobalKey<FormState>();
                     const SizedBox(height: 12),
                     _buildDOBField(),
                     const SizedBox(height: 12),
-                    _buildGenderDropdown(),
+                   // _buildGenderDropdown(),
                   ],
                 ),
                 
                 const SizedBox(height: 16),
 
                 // Additional Information Card
-                _buildFormCard(
+                /*_buildFormCard(
                   title: 'Additional Information',
                   children: [
                     _buildDepartmentDropdown(),
                     const SizedBox(height: 12),
                     _buildLocationDropdown(),
                     const SizedBox(height: 12),
-                    _buildCustomField1(),
+                    //_buildCustomField1(),
                     const SizedBox(height: 12),
-                    _buildCustomField2(),
+                    //_buildCustomField2(),
                     const SizedBox(height: 12),
-                    _buildCustomField3(),
+                    //_buildCustomField3(),
                   ],
-                ),
+                ),*/
                 
                 const SizedBox(height: 20),
 
@@ -462,7 +462,7 @@ final _formKey = GlobalKey<FormState>();
       ),
     );
   }
-
+/*
   Widget _buildGenderDropdown() {
     return _buildMobileDropdownField(
       value: _selectedGender,
@@ -532,7 +532,7 @@ final _formKey = GlobalKey<FormState>();
       multiline: true,
     );
   }
-
+*/
   // Mobile-optimized text field
   Widget _buildMobileTextField({
     required TextEditingController controller,
@@ -921,19 +921,21 @@ final _formKey = GlobalKey<FormState>();
 
     try {
       final profileData = {
-        'user_id': user.id,
-        'email': user.email,
-        'name': _nameController.text.trim(),
-        'role': widget.selectedRole.name,
-        'phone': _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : null,
-        'date_of_birth': _selectedDate?.toIso8601String(),
-        'gender': _selectedGender,
-        'department': _selectedDepartment,
-        'location': _selectedLocation,
-        'custom_field_1': _field1Controller.text.trim().isNotEmpty ? _field1Controller.text.trim() : null,
-        'custom_field_2': _field2Controller.text.trim().isNotEmpty ? _field2Controller.text.trim() : null,
-        'custom_field_3': _field3Controller.text.trim().isNotEmpty ? _field3Controller.text.trim() : null,
-      };
+  'user_id': user.id,
+  'email': user.email,
+  'name': _nameController.text.trim(),
+  'role': widget.selectedRole.name,
+  // 'phone': _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : null, // Not in schema
+  'date_of_birth': _selectedDate?.toIso8601String(),
+  // 'gender': _selectedGender, // Not in schema
+  // 'department': _selectedDepartment, // Not in schema
+  // 'location': _selectedLocation, // Not in schema
+  // 'custom_field_1': _field1Controller.text.trim().isNotEmpty ? _field1Controller.text.trim() : null, // Not in schema
+  // 'custom_field_2': _field2Controller.text.trim().isNotEmpty ? _field2Controller.text.trim() : null, // Not in schema
+  // 'custom_field_3': _field3Controller.text.trim().isNotEmpty ? _field3Controller.text.trim() : null, // Not in schema
+  // 'profile_image_url': ..., // Not in schema
+  // 'mobile_number': _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : null, // If you want to use mobile_number instead of phone
+};
 
       final insertResult = await SupabaseService.client
           .from('user_profiles')
