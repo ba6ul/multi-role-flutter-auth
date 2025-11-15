@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/user_role.dart';
+import '../domain/user_role.dart';
 
 /// supabase_services.dart
 /// 
@@ -147,5 +147,12 @@ class SupabaseService {
   /// Sign out the current user.
   static Future<void> signOut() async {
     await _client.auth.signOut();
+  }
+
+  /// Get user email.
+  String? getUserEmail() {
+    final Session = _client.auth.currentSession;
+    final User = Session?.user;
+    return User?.email;
   }
 }

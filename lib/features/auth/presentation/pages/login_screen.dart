@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/dashboard/presentation/widgets/auth/password_field.dart';
-import 'package:multi_role_flutter_auth/onboarding/role_selection_page.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/password_field.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/pages/role_selection_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../dashboard/dashboard_router.dart';
-import '../../models/user_role.dart';
-import 'package:multi_role_flutter_auth/dashboard/presentation/widgets/auth/email_field.dart';
+import '../router/dashboard_router.dart';
+import '../../domain/user_role.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/email_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

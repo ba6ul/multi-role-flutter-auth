@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:math';
-import '../models/user_role.dart';
-import 'package:multi_role_flutter_auth/services/supabase_services.dart';
-import 'package:multi_role_flutter_auth/dashboard/dashboard_router.dart';
+import '../../domain/user_role.dart';
+import 'package:multi_role_flutter_auth/features/auth/data/supabase_services.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/router/dashboard_router.dart';
 
 /*
  * CUSTOMIZABLE PROFILE SETUP PAGE
