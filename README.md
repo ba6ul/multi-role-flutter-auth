@@ -45,5 +45,12 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   department TEXT,
   location TEXT,
   profile_image_url TEXT
+
+  -- You can add custom columns or modify the above columns if needed.
+  -- Note: If you change the schema, you must update the code accordingly.
+  -- Example:
+  -- custom_field TEXT,
+  -- another_field INTEGER
 );
+
 
