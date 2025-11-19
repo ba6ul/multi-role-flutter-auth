@@ -21,10 +21,6 @@ samples, guidance on mobile development, and a full API reference.
 
 This project needs Supabase table named `user_profiles`.  
 
-## Follow the steps (Required)
-
-Open your Supabase project and run the SQL below.
-
 ### Steps
 1. Open **Supabase Dashboard**
 2. Go to **SQL Editor**
