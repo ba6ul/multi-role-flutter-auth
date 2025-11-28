@@ -26,7 +26,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  supabase_flutter: ^2.9.1
+  supabase_flutter: ^2.10.3
   flutter_dotenv: ^5.1.0
   image_picker: ^1.0.4
 
@@ -40,6 +40,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  fpdart: ^1.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

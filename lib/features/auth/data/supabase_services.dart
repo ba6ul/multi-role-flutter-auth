@@ -116,7 +116,7 @@ class SupabaseService {
 
   /// Sign in the user using email and password.
   /// Returns the authenticated [User] on success or null on failure.
-  static Future<User?> signInWithEmail(String email, String password) async {
+  static Future<User?> cEmail(String email, String password) async {
     try {
       final response = await _client.auth.signInWithPassword(
         email: email,
