@@ -27,14 +27,23 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
     required UserRole role,
   }) async {
-    try { final userModel = await remoteDataSource.signUpWithEmailPassword(name: name, email: email, password: password, role: role); 
-    
-    return right(userModel as UserEntity);
-    }
-      on NetworkException catch (e) {
-        return left(Failure(e.message));
-      }
+    try {
+      final userModel = await remoteDataSource.signUpWithEmailPassword(
+        name: name,
+        email: email,
+        password: password,
+        role: role,
+      );
+
+      return right(userModel as UserEntity);
+    } on NetworkException catch (e) {
+      return left(Failure(e.message));
     }
   }
   
-
+  @override
+  Future<Either<Failure, UserEntity>> currentUser() {
+    // TODO: implement currentUser
+    throw UnimplementedError();
+  }
+}

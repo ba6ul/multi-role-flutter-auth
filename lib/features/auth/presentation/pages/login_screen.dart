@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_role_flutter_auth/features/auth/data/UserProfileService.dart'; as user_profile;
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/password_field.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/role_selection_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -52,28 +53,19 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.user != null) {
         final userId = response.user!.id;
 
-        // Fetch user profile from Supabase
-        final profileResponse = await Supabase.instance.client
-            .from('user_profiles')
-            .select('role')
-            .eq('user_id', userId)
-            .single();
+        // Use your service correctly (instance, not static)
+        final authService = AuthService();
+        final userRole = await authService.fetchUserRole(userId);
 
-        final roleString = profileResponse['role'];
-        final userRole = UserRoleExtension.fromDbValue(roleString);
-
-        if (userRole != null && mounted) {
+        // Navigate based on the user role
+        if (mounted) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (_) => DashboardRouter(role: userRole)),
           );
-        } else {
-          setState(() {
-            _errorMessage = 'User role not found.';
-          });
         }
       }
-    } on AuthException catch (e) {
+    } on user_profile.AuthException catch (e) {
       setState(() {
         _errorMessage = e.message;
       });
@@ -226,6 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ],
     );
   }
+
   // Reusable error message widget
   Widget _buildErrorMessage() {
     return Container(
