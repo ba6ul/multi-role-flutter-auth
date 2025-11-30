@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/features/auth/data/UserProfileService.dart'; as user_profile;
+import 'package:multi_role_flutter_auth/features/auth/data/UserProfileService.dart' as user_profile_service;
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/password_field.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/role_selection_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
         final userId = response.user!.id;
 
         // Use your service correctly (instance, not static)
-        final authService = AuthService();
+        final authService = user_profile_service.AuthService();
         final userRole = await authService.fetchUserRole(userId);
 
         // Navigate based on the user role
@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         }
       }
-    } on user_profile.AuthException catch (e) {
+    } on user_profile_service.AuthException catch (e) {
       setState(() {
         _errorMessage = e.message;
       });

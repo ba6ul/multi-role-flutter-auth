@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:multi_role_flutter_auth/core/config/api_keys.dart';
-import 'package:multi_role_flutter_auth/features/auth/data/datasource/auth_remote_data_source.dart';
-import 'package:multi_role_flutter_auth/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/repository/signup.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:multi_role_flutter_auth/features/init_dependencies.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Pages
@@ -13,27 +11,16 @@ import 'package:multi_role_flutter_auth/features/auth/presentation/pages/login_s
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  
   // Load environment variables from the .env file
-  await dotenv.load(fileName: ".env");
-  ApiKeys.init();
-
-  // Initialize Supabase
-  await Supabase.initialize(
-    url: ApiKeys.supabaseUrl,
-    anonKey: ApiKeys.supabaseAnon,
-  );
-
+  await initDependencies();
+ 
   runApp(
     MultiBlocProvider(
       providers: [
         // Add your BlocProviders here
         BlocProvider(
-          create: (_) => AuthBloc(
-            userSignUp: UserSignUp(
-              AuthRepositoryImpl(AuthRemoteDataSourceImpl(Supabase.instance.client)),
-            ),
-          ),
+          create: (_) =>serviceLocator<AuthBloc>(),
         ),
       ],
       child: const MyApp(),
