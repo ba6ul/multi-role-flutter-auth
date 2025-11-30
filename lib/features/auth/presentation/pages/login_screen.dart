@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:multi_role_flutter_auth/features/auth/data/UserProfileService.dart' as user_profile_service;
-import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/password_field.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_field.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/role_selection_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../router/dashboard_router.dart';
-import '../../domain/user_role.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/email_field.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -118,8 +117,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 32),
 
                         // Email Field
-                        EmailField(
+                         AuthField(
+                          hintText: 'Enter your email',
+                          labelText: 'Email',
+                          prefixIcon: Icons.email,
                           controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
@@ -136,8 +139,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 16),
 
                         // Password Field
-                        PasswordField(
+                        AuthField(
+                          hintText: 'Enter Your Password',
+                          labelText: "Password",
+                          prefixIcon: Icons.lock,
                           controller: _passwordController,
+                          obscureText: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your password';
@@ -149,6 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           onFieldSubmitted: (_) => _login(),
                         ),
+                        
 
                         const SizedBox(height: 24),
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/email_field.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/password_field.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_field.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/profile_setup_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'login_screen.dart';
@@ -18,6 +17,7 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _isLoading = false;
@@ -159,10 +159,23 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                         const SizedBox(height: 24),
+                        // Username
+                        AuthField(
+                          hintText: 'Username',
+                          labelText: 'Pick a Username',
+                          prefixIcon: Icons.person,
+                          controller: _usernameController,
+                        ),
+
+                        const SizedBox(height: 16),
 
                         // Email Field
-                        EmailField(
+                        AuthField(
+                          hintText: 'Enter your email',
+                          labelText: 'Email',
+                          prefixIcon: Icons.email,
                           controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
@@ -178,8 +191,12 @@ class _SignupScreenState extends State<SignupScreen> {
                         const SizedBox(height: 16),
 
                         // Password Field
-                        PasswordField(
+                        AuthField(
+                          hintText: 'Please enter a password',
+                          labelText: "Password",
+                          prefixIcon: Icons.lock,
                           controller: _passwordController,
+                          obscureText: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a password';
@@ -189,26 +206,29 @@ class _SignupScreenState extends State<SignupScreen> {
                             }
                             return null;
                           },
-
                         ),
+
                         const SizedBox(height: 24),
+
                         // Confirm Password Field
-                        PasswordField(
-                          controller: _confirmPasswordController,
-                          labelText: 'Confirm Password',
+                        AuthField(
                           hintText: 'Re-enter your password',
+                          labelText: 'Confirm Password',
+                          prefixIcon: Icons.lock,
+                          controller: _passwordController,
+                          obscureText: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please confirm your password';
+                              return 'Please enter a password';
                             }
-                            if (value != _passwordController.text) {
-                              return 'Passwords do not match';
+                            if (value.length < 6) {
+                              return 'Password must be at least 6 characters';
                             }
                             return null;
                           },
                           onFieldSubmitted: (_) => _signup(),
                         ),
-
+                        
                         const SizedBox(height: 24),
 
                         // Error Message
