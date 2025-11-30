@@ -19,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required UserSignUp userSignUp,
    // required UserLogin userLogin,
     //required CurrentUser currentUser,
-   
+   ZZZZZ
   }) : _userSignUp = userSignUp,
       // _userLogin = userLogin,
        // _currentUser = currentUser,
@@ -37,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       UserSignUpParams(
         email: event.email,
         password: event.password,
-        name: event.name,
+        name: event.username,
         role: event.role,
       ),
     );
