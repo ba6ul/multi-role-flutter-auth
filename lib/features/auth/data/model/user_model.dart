@@ -1,11 +1,7 @@
-// lib/features/auth/data/models/user_model.dart
-//import '../../domain/entities/user_entity.dart'; // import your entity
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../domain/user_role.dart'; // import your enum
 import 'package:multi_role_flutter_auth/core/common/entities/user_entity.dart';
 
-class UserModel extends UserEntity {
+class UserModel extends Userprofiles {
   UserModel({
     required super.id,
     required super.email,
@@ -20,23 +16,20 @@ class UserModel extends UserEntity {
       email: map['email'] ?? '',
       name: map['name'] ?? '',
       // Convert String back to Enum
-      role: UserRole.values.firstWhere(
-        (e) => e.name == map['role'], 
-        orElse: () => UserRole.guest,
-      ),
+      role: map['role'] ?? '',
     );
   }
-  
-  // Create UserModel from Supabase User Object and Metadata
-  factory UserModel.fromSupabaseUser(User user, Map<String, dynamic>? profileData) {
+  UserModel copyWith({
+    String? id,
+    String? email,
+    String? name,
+    String? role,
+  }) {
     return UserModel(
-      id: user.id,
-      email: user.email ?? '',
-      name: profileData?['name'] ?? '',
-      role: UserRole.values.firstWhere(
-         (e) => e.name == profileData?['role'],
-         orElse: () => UserRole.guest
-      ),
+      id: id ?? this.id,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      role: role ?? this.role,
     );
   }
 }

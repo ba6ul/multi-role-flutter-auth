@@ -7,7 +7,7 @@ final class AuthSignup extends AuthEvent {
   final String username;
   final String email;
   final String password;
-  final UserRole role;
+  final String role;
 
   AuthSignup({
     required this.username,

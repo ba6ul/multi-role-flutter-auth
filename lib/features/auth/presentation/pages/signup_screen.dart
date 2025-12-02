@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_field.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/profile_setup_page.dart';
-//import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'login_screen.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 import '../bloc/auth_bloc.dart';
@@ -292,7 +291,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                   .trim(),
                                               username: _usernameController.text
                                                   .trim(),
-                                              role: widget.selectedRole,
+                                              role: widget.selectedRole.dbValue,
                                             ),
                                           );
                                         }

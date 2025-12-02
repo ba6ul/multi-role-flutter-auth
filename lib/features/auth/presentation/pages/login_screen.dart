@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multi_role_flutter_auth/features/auth/data/UserProfileService.dart' as user_profile_service;
+import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/pages/signup_screen.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_field.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/role_selection_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -8,6 +10,12 @@ import '../router/dashboard_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  // Set this to false to hide the role selection page
+  static const bool useRoleSelection = false; 
+  
+  // If useRoleSelection is false, this role will be used automatically
+  static const UserRole defaultRole = UserRole.member;
 
   // For easy customization:
   //static const Color primaryColor = Colors.pink;
@@ -311,13 +319,24 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: _isLoading
                 ? null
                 : () {
+                  if (LoginScreen.useRoleSelection) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const RoleSelectionPage(),
                       ),
                     );
-                  },
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignupScreen(
+                            selectedRole: LoginScreen.defaultRole,
+                          ),
+                        ),
+                      );
+                    }
+                },
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.blue,
               side: const BorderSide(color: Colors.blue),

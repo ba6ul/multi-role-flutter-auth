@@ -12,13 +12,14 @@ import 'package:multi_role_flutter_auth/features/auth/presentation/pages/login_s
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Load environment variables from the .env file
+  // Initialize environment variables and dependencies
   await initDependencies();
  
   runApp(
     MultiBlocProvider(
       providers: [
-        // Add your BlocProviders here
+
+        // Auth Bloc
         BlocProvider(
           create: (_) =>serviceLocator<AuthBloc>(),
         ),

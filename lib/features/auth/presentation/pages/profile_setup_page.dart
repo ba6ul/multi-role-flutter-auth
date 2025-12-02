@@ -128,6 +128,16 @@ final _formKey = GlobalKey<FormState>();
             fontWeight: FontWeight.w600,
           ),
         ),
+        actions: [
+    TextButton(
+      onPressed: _handleSkip,
+      child: const Text(
+        'Skip',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+    ),
+    const SizedBox(width: 8),
+  ],
         backgroundColor: Colors.white,
         foregroundColor: Colors.grey[800],
         elevation: 0,
@@ -236,6 +246,9 @@ final _formKey = GlobalKey<FormState>();
 
                 // Submit button
                 _buildSubmitButton(),
+
+                const SizedBox(height: 12),
+                _buildSkipButton(),
                 
                 const SizedBox(height: 16),
 
@@ -702,7 +715,40 @@ final _formKey = GlobalKey<FormState>();
       ),
     );
   }
+// 1. The Logic: Skips validation and goes straight to Dashboard
+  void _handleSkip() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DashboardRouter(role: widget.selectedRole),
+      ),
+    );
+  }
 
+  // 2. The Widget: A big, visible Skip button
+  Widget _buildSkipButton() {
+    return SizedBox(
+      height: 48,
+      child: OutlinedButton(
+        onPressed: _handleSkip,
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: Colors.grey[400]!, width: 1.5),
+          foregroundColor: Colors.grey[700],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 0,
+        ),
+        child: const Text(
+          'Skip for Now',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
   Widget _buildSubmitButton() {
     return SizedBox(
       height: 48,

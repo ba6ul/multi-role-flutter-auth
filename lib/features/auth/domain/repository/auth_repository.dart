@@ -1,22 +1,19 @@
-//lib/feature/auth/domain/repository/auth_repositry.dart
-
 import 'package:fpdart/fpdart.dart';
 import 'package:multi_role_flutter_auth/core/common/entities/user_entity.dart';
 import 'package:multi_role_flutter_auth/core/error/failure.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 
 abstract interface class AuthRepository {
-  Future<Either<Failure, UserEntity>> signUpWithEmailPassword({  
+  Future<Either<Failure, Userprofiles>> signUpWithEmailPassword({  
     required String name,
     required String email,
     required String password,
-    required UserRole role,
+    required String role,
   });
 
-  Future<Either<Failure, UserEntity>> loginWithEmailPassword({
+  Future<Either<Failure, Userprofiles>> loginWithEmailPassword({
     required String email,
     required String password,
   });
 
-  Future<Either<Failure, UserEntity>> currentUser();
+  Future<Either<Failure, Userprofiles>> currentUser();
 }

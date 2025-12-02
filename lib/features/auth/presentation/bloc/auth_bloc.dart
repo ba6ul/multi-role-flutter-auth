@@ -19,7 +19,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required UserSignUp userSignUp,
    // required UserLogin userLogin,
     //required CurrentUser currentUser,
-   ZZZZZ
   }) : _userSignUp = userSignUp,
       // _userLogin = userLogin,
        // _currentUser = currentUser,
