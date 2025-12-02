@@ -4,7 +4,6 @@ import 'package:multi_role_flutter_auth/core/common/entities/user_entity.dart';
 import 'package:multi_role_flutter_auth/core/error/failure.dart';
 import 'package:multi_role_flutter_auth/core/usecase/usecase.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/repository/auth_repository.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 
 
 class UserSignUp implements UseCase<Userprofiles, UserSignUpParams> {

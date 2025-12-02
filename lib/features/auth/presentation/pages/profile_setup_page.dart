@@ -64,7 +64,7 @@ final _formKey = GlobalKey<FormState>();
   String? _errorMessage;
   File? _selectedImage;
   DateTime? _selectedDate;
-  
+  /*
   // Dropdown selections
   String? _selectedGender;
   String? _selectedDepartment;
@@ -73,7 +73,7 @@ final _formKey = GlobalKey<FormState>();
   final List<String> _genderOptions = ['Male', 'Female', 'Other', 'Prefer not to say'];
   final List<String> _departmentOptions = ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance', 'Operations'];
   final List<String> _locationOptions = ['Samastipur', 'Patna', 'Delhi', 'Remote'];
-
+*/
   @override
   void initState() {
     super.initState();
@@ -618,7 +618,7 @@ final _formKey = GlobalKey<FormState>();
       ],
     );
   }
-
+/*
   // Mobile-optimized dropdown field
   Widget _buildMobileDropdownField({
     required String? value,
@@ -683,7 +683,7 @@ final _formKey = GlobalKey<FormState>();
       ],
     );
   }
-
+*/
   Widget _buildErrorMessage() {
     return Container(
       padding: const EdgeInsets.all(12),

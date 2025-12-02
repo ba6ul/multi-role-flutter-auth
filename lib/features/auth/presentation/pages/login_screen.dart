@@ -11,11 +11,11 @@ import '../router/dashboard_router.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
-  // Set this to false to hide the role selection page
+  // The user role selection page will be hidden
   static const bool useRoleSelection = false; 
-  
-  // If useRoleSelection is false, this role will be used automatically
-  static const UserRole defaultRole = UserRole.member;
+
+  // This gives a default role if the role section is dsabled 
+  static const UserRole defaultRole = UserRole.admin;
 
   // For easy customization:
   //static const Color primaryColor = Colors.pink;
