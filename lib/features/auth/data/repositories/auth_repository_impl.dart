@@ -2,23 +2,63 @@
 
 import 'package:fpdart/fpdart.dart';
 import 'package:multi_role_flutter_auth/core/common/entities/user_entity.dart';
+import 'package:multi_role_flutter_auth/core/constants/constants.dart';
 import 'package:multi_role_flutter_auth/core/error/failure.dart';
 import 'package:multi_role_flutter_auth/core/error/network_exceptions.dart';
+import 'package:multi_role_flutter_auth/core/network/connection_checker.dart';
 import 'package:multi_role_flutter_auth/features/auth/data/datasource/auth_remote_data_source.dart';
+import 'package:multi_role_flutter_auth/features/auth/data/model/user_model.dart';
 //import 'package:multi_role_flutter_auth/features/auth/domain/entities/userprofiles.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/repository/auth_repository.dart';
 //import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
-  const AuthRepositoryImpl(this.remoteDataSource);
+
+  final ConnectionChecker connectionChecker;
+  const AuthRepositoryImpl(this.remoteDataSource, this.connectionChecker);
+
+  @override
+  Future<Either<Failure, Userprofiles>> currentUser() async {
+    try {
+      if (!await (connectionChecker.isConnected)) {
+        final session = remoteDataSource.currentUserSession;
+
+        if (session == null) {
+          return left(Failure('User not logged in!'));
+        }
+
+        return right(
+          UserModel(
+            id: session.user.id,
+            email: session.user.email ?? '',
+            name: '',
+            role: '',
+          ),
+        );
+      }
+      final user = await remoteDataSource.getCurrentUserData();
+      if (user == null) {
+        return left(Failure('User not logged in!'));
+      }
+
+      return right(user);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
   @override
   Future<Either<Failure, Userprofiles>> loginWithEmailPassword({
     required String email,
     required String password,
-  }) {
-    // TODO: implement loginWithEmailPassword
-    throw UnimplementedError();
+  }) async {
+    return _getUser(
+      () async => await remoteDataSource.loginWithEmailPassword(
+        email: email,
+        password: password,
+      ),
+    );
   }
 
   @override
@@ -41,10 +81,19 @@ class AuthRepositoryImpl implements AuthRepository {
       return left(Failure(e.message));
     }
   }
-  
-  @override
-  Future<Either<Failure, Userprofiles>> currentUser() {
-    // TODO: implement currentUser
-    throw UnimplementedError();
+
+  Future<Either<Failure, Userprofiles>> _getUser(
+    Future<Userprofiles> Function() fn,
+  ) async {
+    try {
+      if (!await (connectionChecker.isConnected)) {
+        return left(Failure(Constants.noConnectionErrorMessage));
+      }
+      final user = await fn();
+
+      return right(user);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
   }
 }
