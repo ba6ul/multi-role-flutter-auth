@@ -6,7 +6,7 @@ class HTexts {
   static const String skip = "Skip";
   static const String done = "Done";
   static const String submit = "Submit";
-  static const String appName = "Multi-Auth";
+  static const String appName = "Authentication";
   static const String tContinue = "Continue";
 
   // -- Authentication Forms
@@ -33,7 +33,7 @@ class HTexts {
 
   // -- Authentication Headings
   static const String loginTitle = "Welcome back,";
-  static const String loginSubTitle = "Premium Multi-Role Template";
+  static const String loginSubTitle = "Premium Flutter Auth Template";
   static const String signupTitle = "Let’s create your account";
   static const String forgetPasswordTitle = "Forget password";
   static const String forgetPasswordSubTitle = "Don’t worry sometimes people can forget too, enter your email and we will send you a password reset link.";
