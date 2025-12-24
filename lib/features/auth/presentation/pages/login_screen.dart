@@ -113,10 +113,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Form(
                     key: _formKey,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // App branding section (customizable)
-                        _buildAppBranding(context),
+                        const Text(HTexts.signIn,
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.w900,
+                              color: HColors.primary,
+                              letterSpacing: -1,
+                            )),
 
                         const SizedBox(height: HSizes.spaceBtwSections),
 
@@ -200,42 +205,7 @@ Widget _buildHeroSection() {
       ),
     );
   }
-  // App branding section
-  Widget _buildAppBranding(BuildContext context) {
-    return Column(
-      children: [
-        // Big title text (to use icon ucomment const Text)
-        const Text(
-          HTexts.loginTitle,
-          style: TextStyle(
-            fontSize: HSizes.fontSizeLg * 2,
-            fontWeight: FontWeight.bold,
-            color: HColors.primary,
-          ),
-        ),
-
-        /*
-      const Icon(
-        Icons.login_rounded, // You can replace this with your logo or another icon
-        size: 32,
-        color: Colors.blue,
-      ),
-      */
-        const SizedBox(height: HSizes.spaceBtwItems),
-
-        // Subtitle message
-        Text(
-          HTexts.loginSubTitle,
-          style: const TextStyle(
-            fontSize: HSizes.fontSizeSm,
-            color: HColors.textSecondary,
-            fontWeight: FontWeight.w500,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
-  }
+ 
 
   // Reusable error message widget
   Widget _buildErrorMessage() {
