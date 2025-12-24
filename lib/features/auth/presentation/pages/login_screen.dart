@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/features/auth/data/UserProfileService.dart' as user_profile_service;
+import 'package:multi_role_flutter_auth/features/auth/data/UserProfileService.dart'
+    as user_profile_service;
 import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/signup_screen.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_field.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/role_selection_page.dart';
+import 'package:multi_role_flutter_auth/utils/constants/color.dart';
+import 'package:multi_role_flutter_auth/utils/constants/sizes.dart';
+import 'package:multi_role_flutter_auth/utils/validators/validators.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../router/dashboard_router.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   // The user role selection page will be hidden
-  static const bool useRoleSelection = false; 
+  static const bool useRoleSelection = false;
 
-  // This gives a default role if the role section is dsabled 
+  // This gives a default role if the role section is dsabled
   static const UserRole defaultRole = UserRole.admin;
 
   // For easy customization:
@@ -29,7 +32,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
@@ -92,10 +95,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: HColors.lightBackground,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: HSizes.lg),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 400),
@@ -104,8 +107,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
+                    color: HColors.white,
+                    borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
@@ -125,25 +128,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 32),
 
                         // Email Field
-                         AuthField(
-                          hintText: 'Enter your email',
+                        AuthField(
+                          hintText: 'Email address',
                           labelText: 'Email',
-                          prefixIcon: Icons.email,
+                          prefixIcon: Icons.alternate_email_rounded,
                           controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            if (!RegExp(
-                              r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                            ).hasMatch(value)) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
+                          keyboardType:
+                              TextInputType.emailAddress, // Added for better UX
+                          validator: HValidator.validateEmail,
                         ),
-
                         const SizedBox(height: 16),
 
                         // Password Field
@@ -153,18 +146,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           prefixIcon: Icons.lock,
                           controller: _passwordController,
                           obscureText: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
-                            }
-                            return null;
-                          },
+                          validator: HValidator
+                              .validatePassword,
                           onFieldSubmitted: (_) => _login(),
                         ),
-                        
 
                         const SizedBox(height: 24),
 
@@ -208,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: HColors.primary,
           ),
         ),
 
@@ -225,8 +210,8 @@ class _LoginScreenState extends State<LoginScreen> {
         Text(
           LoginScreen.subTitle,
           style: const TextStyle(
-            fontSize: 16,
-            color: Colors.black87,
+            fontSize: 15,
+            color: HColors.textSecondary,
             fontWeight: FontWeight.w500,
           ),
           textAlign: TextAlign.center,
@@ -240,13 +225,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.red.withOpacity(0.1),
+        color: HColors.error.withOpacity(0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.red.withOpacity(0.3)),
+        border: Border.all(color: HColors.error.withOpacity(0.2)),
       ),
       child: Row(
         children: [
-          Icon(Icons.error_outline, color: Colors.red, size: 20),
+          Icon(Icons.error_outline, color: HColors.error, size: 20),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -319,15 +304,15 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: _isLoading
                 ? null
                 : () {
-                  if (LoginScreen.useRoleSelection) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RoleSelectionPage(),
-                      ),
-                    );
-                  } else {
-                    Navigator.push(
+                    if (LoginScreen.useRoleSelection) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RoleSelectionPage(),
+                        ),
+                      );
+                    } else {
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const SignupScreen(
@@ -336,7 +321,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     }
-                },
+                  },
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.blue,
               side: const BorderSide(color: Colors.blue),
