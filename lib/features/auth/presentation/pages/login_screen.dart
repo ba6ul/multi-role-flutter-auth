@@ -7,6 +7,7 @@ import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/role_selection_page.dart';
 import 'package:multi_role_flutter_auth/utils/constants/color.dart';
 import 'package:multi_role_flutter_auth/utils/constants/sizes.dart';
+import 'package:multi_role_flutter_auth/utils/constants/text_strings.dart';
 import 'package:multi_role_flutter_auth/utils/validators/validators.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../router/dashboard_router.dart';
@@ -96,28 +97,20 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: HColors.lightBackground,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: HSizes.lg),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 400),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 24.0),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildHeroSection(),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: HSizes.spaceBtwSections),
                 child: Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: HColors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Form(
+                  padding: const EdgeInsets.symmetric(
+                horizontal: HSizes.lg,
+                vertical: HSizes.spaceBtwSections,
+              ),
+                  child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 450),
+                child: Form(
                     key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -125,24 +118,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         // App branding section (customizable)
                         _buildAppBranding(context),
 
-                        const SizedBox(height: 32),
+                        const SizedBox(height: HSizes.spaceBtwSections),
 
                         // Email Field
                         AuthField(
-                          hintText: 'Email address',
-                          labelText: 'Email',
+                          hintText: HTexts.email,
+                          labelText: HTexts.email,
                           prefixIcon: Icons.alternate_email_rounded,
                           controller: _emailController,
                           keyboardType:
                               TextInputType.emailAddress, // Added for better UX
                           validator: HValidator.validateEmail,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: HSizes.spaceBtwInputFields),
 
                         // Password Field
                         AuthField(
-                          hintText: 'Enter Your Password',
-                          labelText: "Password",
+                          hintText: HTexts.password,
+                          labelText: HTexts.password,
                           prefixIcon: Icons.lock,
                           controller: _passwordController,
                           obscureText: true,
@@ -151,47 +144,71 @@ class _LoginScreenState extends State<LoginScreen> {
                           onFieldSubmitted: (_) => _login(),
                         ),
 
-                        const SizedBox(height: 24),
+                        const SizedBox(height: HSizes.defaultSpace),
 
                         // Error Message
                         if (_errorMessage != null) ...[
                           _buildErrorMessage(),
-                          const SizedBox(height: 16),
+                         const SizedBox(height: HSizes.spaceBtwItems),
                         ],
 
                         // Login Button
                         _buildLoginButton(context),
 
-                        const SizedBox(height: 24),
+                        const SizedBox(height: HSizes.defaultSpace),
 
-                        // Divider with "or" text
-                        _buildDivider(),
-
-                        const SizedBox(height: 24),
-
-                        // Sign up section
                         _buildSignupSection(context),
+                         _buildDivider(),
+                         const SizedBox(height: HSizes.defaultSpace),
+                         //Google and Facebook Login Buttons goes here
                       ],
                     ),
                   ),
                 ),
               ),
-            ),
+      )] ),
+          ));
+        
+  }
+Widget _buildHeroSection() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.only(top: 80, bottom: 60),
+      decoration: const BoxDecoration(
+        color: HColors.secondary, // Vanilla Cream color
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80)),
+      ),
+      child: Column(
+        children: [
+          ShaderMask(
+            shaderCallback: (bounds) => const LinearGradient(
+              colors: [HColors.primary, HColors.primary],
+            ).createShader(bounds),
+            blendMode: BlendMode.srcIn,
+            child: const FlutterLogo(size: 70),
           ),
-        ),
+          const SizedBox(height: HSizes.md),
+          const Text(
+            HTexts.appName,
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800, color: HColors.primary),
+          ),
+          Text(
+            HTexts.loginSubTitle,
+            style: TextStyle(color: HColors.primary.withOpacity(0.5), fontWeight: FontWeight.w500),
+          ),
+        ],
       ),
     );
   }
-
   // App branding section
   Widget _buildAppBranding(BuildContext context) {
     return Column(
       children: [
         // Big title text (to use icon ucomment const Text)
         const Text(
-          LoginScreen.Title,
+          HTexts.loginTitle,
           style: TextStyle(
-            fontSize: 32,
+            fontSize: HSizes.fontSizeLg * 2,
             fontWeight: FontWeight.bold,
             color: HColors.primary,
           ),
@@ -204,13 +221,13 @@ class _LoginScreenState extends State<LoginScreen> {
         color: Colors.blue,
       ),
       */
-        const SizedBox(height: 16),
+        const SizedBox(height: HSizes.spaceBtwItems),
 
         // Subtitle message
         Text(
-          LoginScreen.subTitle,
+          HTexts.loginSubTitle,
           style: const TextStyle(
-            fontSize: 15,
+            fontSize: HSizes.fontSizeSm,
             color: HColors.textSecondary,
             fontWeight: FontWeight.w500,
           ),
@@ -223,20 +240,21 @@ class _LoginScreenState extends State<LoginScreen> {
   // Reusable error message widget
   Widget _buildErrorMessage() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(bottom: HSizes.md),
+      padding: const EdgeInsets.all(HSizes.md),
       decoration: BoxDecoration(
-        color: HColors.error.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: HColors.error.withOpacity(0.2)),
+        color: HColors.error.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(HSizes.borderRadiusMd),
+        border: Border.all(color: HColors.error.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
-          Icon(Icons.error_outline, color: HColors.error, size: 20),
-          const SizedBox(width: 8),
+          const Icon(Icons.error_outline, color: HColors.error, size: 20),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
-              _errorMessage!,
-              style: const TextStyle(color: Colors.red, fontSize: 14),
+              _errorMessage!, 
+              style: const TextStyle(color: HColors.error, fontSize: 13),
             ),
           ),
         ],
@@ -268,7 +286,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               )
             : const Text(
-                'Sign In',
+                HTexts.signIn,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
       ),
@@ -283,7 +301,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            'or',
+            HTexts.orSignInWith,
             style: TextStyle(color: Colors.grey[600], fontSize: 14),
           ),
         ),
@@ -330,7 +348,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             child: const Text(
-              'Create New Account',
+              HTexts.createAccount,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
           ),
