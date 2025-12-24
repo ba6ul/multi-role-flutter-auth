@@ -3,6 +3,7 @@
 # 📸 Mobile Screenshots
 <table> <tr> <td> 
   <img src=".github/Screenshot_20251223-184224.png" width="220" /> </td> <td> 
+  <img src=".github/screenshot-1766582444299.png" width="220" /> </td> <td>
   <img src=".github/Screenshot_20251223-184315.png" width="220" /> </td> <td>
   <img src=".github/Screenshot_20251223-184405.png" width="220" /> </td> <td>
   <img src=".github/Screenshot_20251223-184420.png" width="220" /> </td> </tr>
