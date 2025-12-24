@@ -6,6 +6,7 @@ import 'package:multi_role_flutter_auth/features/init_dependencies.dart';
 
 // Pages
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/login_screen.dart';
+import 'package:multi_role_flutter_auth/utils/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'multi_role_flutter_auth',
+      themeMode: ThemeMode.light,
+      theme: HAppTheme.lightTheme,
+      darkTheme: HAppTheme.darkTheme,
       home: const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );

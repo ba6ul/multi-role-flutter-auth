@@ -38,8 +38,12 @@ import 'package:multi_role_flutter_auth/features/auth/presentation/router/dashbo
 
 class ProfileSetupPage extends StatefulWidget {
   final UserRole selectedRole;
+  static route({required UserRole selectedRole}) => MaterialPageRoute(
+        builder: (context) => ProfileSetupPage(selectedRole: selectedRole),
+      );
 
   const ProfileSetupPage({super.key, required this.selectedRole});
+  
 
   @override
   State<ProfileSetupPage> createState() => _ProfileSetupPageState();
