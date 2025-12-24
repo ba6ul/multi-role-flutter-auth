@@ -14,7 +14,7 @@ static String? validateEmail(String? value) {
     return null;
   }
 
-  /// Password Validation
+  /// Password Validation For signup
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password is required.';
@@ -38,6 +38,18 @@ static String? validateEmail(String? value) {
     // Check for special characters
     if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
       return 'Password must contain at least one special character.';
+    }
+
+    return null;
+  }
+  /// Password Validation For Login
+  static String? validateLoginPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is required.';
+    }
+    
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters.';
     }
 
     return null;

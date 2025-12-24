@@ -21,12 +21,6 @@ class LoginScreen extends StatefulWidget {
   // This gives a default role if the role section is dsabled
   static const UserRole defaultRole = UserRole.admin;
 
-  // For easy customization:
-  //static const Color primaryColor = Colors.pink;
-  //static const String appName = "Your App Name";
-  static const String subTitle = "Let's get Started";
-  static const String Title = "Welcome Back";
-  static const IconData appIcon = Icons.login_rounded;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -145,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _passwordController,
                           obscureText: true,
                           validator: HValidator
-                              .validatePassword,
+                              .validateLoginPassword,
                           onFieldSubmitted: (_) => _login(),
                         ),
 
@@ -163,8 +157,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: HSizes.defaultSpace),
 
                         _buildSignupSection(context),
-                         _buildDivider(),
-                         const SizedBox(height: HSizes.defaultSpace),
+                        // _buildDivider(),
+                        // const SizedBox(height: HSizes.defaultSpace),
                          //Google and Facebook Login Buttons goes here
                       ],
                     ),
@@ -235,12 +229,13 @@ Widget _buildHeroSection() {
   // Customizable login button
   Widget _buildLoginButton(BuildContext context) {
     return SizedBox(
+      width: double.infinity,
       height: 50,
       child: ElevatedButton(
         onPressed: _isLoading ? null : _login,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
+          backgroundColor: HColors.primary,
+          foregroundColor: HColors.secondary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -262,7 +257,7 @@ Widget _buildHeroSection() {
       ),
     );
   }
-
+/*
   // Reusable divider
   Widget _buildDivider() {
     return Row(
@@ -279,7 +274,7 @@ Widget _buildHeroSection() {
       ],
     );
   }
-
+*/
   // Customizable signup section
   Widget _buildSignupSection(BuildContext context) {
     return Column(
@@ -311,8 +306,8 @@ Widget _buildHeroSection() {
                     }
                   },
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.blue,
-              side: const BorderSide(color: Colors.blue),
+              foregroundColor: HColors.primary,
+              side: BorderSide(color: HColors.primary),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -325,41 +320,6 @@ Widget _buildHeroSection() {
         ),
         const SizedBox(height: 16),
 
-        // Alternative text link (backup option)
-        /*
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Don't have an account? ",
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 14,
-              ),
-            ),
-            TextButton(
-              onPressed: _isLoading
-                  ? null
-                  : () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RoleSelectionPage(),
-                        ),
-                      );
-                    },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.blue,
-              ),
-              child: const Text(
-                'Sign up',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),*/
       ],
     );
   }
