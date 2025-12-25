@@ -164,23 +164,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             const SizedBox(height: HSizes.defaultSpace),
                             Row(
-                              
                               children: [
                                 Expanded(child: _buildSignupSection(context)),
                                 const SizedBox(
                                   width: HSizes.spaceBtwInputFields,
-                                ), // Add some gap between them
-                                
+                                ),
+
                                 Expanded(child: _buildLoginButton()),
                               ],
                             ),
                             const SizedBox(height: HSizes.defaultSpace),
-                            // Login Button
-                            //_buildLoginButton(),
-
-                            //const SizedBox(height: HSizes.defaultSpace),
-
-                            //_buildSignupSection(context),
                           ],
                         ),
                       ),
@@ -261,42 +254,40 @@ class _LoginScreenState extends State<LoginScreen> {
 
   /// Builds the Signup/Navigation section at the bottom
   Widget _buildSignupSection(BuildContext context) {
-return
-        SizedBox(
-          height: 50,
-          width: double.infinity,
-          child: OutlinedButton(
-            onPressed: () {
-              if (AuthConfig.useRoleSelection) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RoleSelectionPage(),
-                  ),
-                );
-              } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SignupScreen(
-                      selectedRole: AuthConfig.defaultRole,
-                    ),
-                  ),
-                );
-              }
-            },
-            style: OutlinedButton.styleFrom(
-              foregroundColor: HColors.primary,
-              side: const BorderSide(color: HColors.primary),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+    return SizedBox(
+      height: 50,
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: () {
+          if (AuthConfig.useRoleSelection) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RoleSelectionPage(),
               ),
-            ),
-            child: const Text(
-              HTexts.createAccount,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    const SignupScreen(selectedRole: AuthConfig.defaultRole),
+              ),
+            );
+          }
+        },
+        style: OutlinedButton.styleFrom(
+          foregroundColor: HColors.primary,
+          side: const BorderSide(color: HColors.primary),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-        );
+        ),
+        child: const Text(
+          HTexts.createAccount,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+      ),
+    );
   }
 }

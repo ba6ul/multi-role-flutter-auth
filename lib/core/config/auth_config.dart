@@ -8,8 +8,10 @@ class AuthConfig {
   static const bool showRoleBadgeOnSignup = false;
 
   // Profile Completion Config
-  static const bool useProfileCompletion = true; 
+  static const bool useProfileCompletion = false; 
+  
 
   // Need workspace setup after profile completion
   static const bool allowSkipProfile = true; // Shows/hides the Skip button
+
 }

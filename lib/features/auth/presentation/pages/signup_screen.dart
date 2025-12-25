@@ -9,6 +9,7 @@ import 'package:multi_role_flutter_auth/core/config/auth_config.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/profile_setup_page.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/router/dashboard_router.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_field.dart';
 
 // Utility / Theme Imports
@@ -31,8 +32,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
-  bool _agreeToLegal = false; 
+
+  bool _agreeToLegal = false;
   bool _subscribeNewsletter = false;
 
   @override
@@ -54,7 +55,11 @@ class _SignupScreenState extends State<SignupScreen> {
         // Using a standard size for the back button to maintain alignment with the text below
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new, color: HColors.primary, size: 22),
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: HColors.primary,
+            size: 22,
+          ),
         ),
       ),
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -62,12 +67,26 @@ class _SignupScreenState extends State<SignupScreen> {
           if (state is AuthFailure) {
             showSnackBar(context, state.message);
           } else if (state is AuthSuccess) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => ProfileSetupPage(selectedRole: widget.selectedRole),
-              ),
-            );
+            // NAVIGATION LOGIC BASED ON CONFIG
+            if (AuthConfig.useProfileCompletion) {
+              // Redirect directly to Profile Completion
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      ProfileSetupPage(selectedRole: widget.selectedRole),
+                ),
+              );
+            } else {
+              // Redirect to Dashboard
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+            builder: (context) => DashboardRouter(role: widget.selectedRole),
+          ), // Replace with your DashboardPage()
+                (route) => false, // Clears the navigation stack
+              );
+            }
           }
         },
         builder: (context, state) {
@@ -87,7 +106,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // 1. FIXED TOP BUFFER
-                      // This ensures that even if the badge is hidden, 
+                      // This ensures that even if the badge is hidden,
                       // the text doesn't jump too close to the AppBar.
                       const SizedBox(height: HSizes.sm),
 
@@ -112,7 +131,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         "Fill in the details below to set up your account.",
                         style: TextStyle(color: Colors.grey[600], fontSize: 15),
                       ),
-                      
+
                       const SizedBox(height: HSizes.spaceBtwSections),
 
                       // INPUT FIELDS
@@ -121,7 +140,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         labelText: "Username",
                         prefixIcon: Icons.person_outline_rounded,
                         controller: _usernameController,
-                        validator: (val) => val!.isEmpty ? "Username is required" : null,
+                        validator: (val) =>
+                            val!.isEmpty ? "Username is required" : null,
                       ),
                       const SizedBox(height: HSizes.spaceBtwInputFields),
 
@@ -151,9 +171,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         prefixIcon: Icons.lock_reset_rounded,
                         controller: _confirmPasswordController,
                         obscureText: true,
-                        validator: (val) => val != _passwordController.text ? "Passwords do not match" : null,
+                        validator: (val) => val != _passwordController.text
+                            ? "Passwords do not match"
+                            : null,
                       ),
-                      
+
                       const SizedBox(height: HSizes.spaceBtwSections),
 
                       // LEGAL & NEWSLETTER
@@ -171,7 +193,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       _buildSocialDivider(),
                       const SizedBox(height: HSizes.spaceBtwItems),
                       _buildSocialButtons(),
-                      
+
                       // Extra bottom padding for scrollability
                       const SizedBox(height: HSizes.spaceBtwSections),
                     ],
@@ -202,7 +224,11 @@ class _SignupScreenState extends State<SignupScreen> {
           const SizedBox(width: 8),
           Text(
             widget.selectedRole.displayName,
-            style: const TextStyle(fontWeight: FontWeight.bold, color: HColors.primary, fontSize: 12),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: HColors.primary,
+              fontSize: 12,
+            ),
           ),
         ],
       ),
@@ -213,11 +239,14 @@ class _SignupScreenState extends State<SignupScreen> {
     return Row(
       children: [
         SizedBox(
-          height: 24, width: 24,
+          height: 24,
+          width: 24,
           child: Checkbox(
             value: _agreeToLegal,
             activeColor: HColors.primary,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
             onChanged: (val) => setState(() => _agreeToLegal = val!),
           ),
         ),
@@ -230,13 +259,19 @@ class _SignupScreenState extends State<SignupScreen> {
                 const TextSpan(text: "I agree to the "),
                 TextSpan(
                   text: "Terms of Service",
-                  style: const TextStyle(color: HColors.primary, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: HColors.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
                   recognizer: TapGestureRecognizer()..onTap = () {},
                 ),
                 const TextSpan(text: " and "),
                 TextSpan(
                   text: "Privacy Policy",
-                  style: const TextStyle(color: HColors.primary, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: HColors.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
                   recognizer: TapGestureRecognizer()..onTap = () {},
                 ),
               ],
@@ -251,11 +286,14 @@ class _SignupScreenState extends State<SignupScreen> {
     return Row(
       children: [
         SizedBox(
-          height: 24, width: 24,
+          height: 24,
+          width: 24,
           child: Checkbox(
             value: _subscribeNewsletter,
             activeColor: HColors.primary,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
             onChanged: (val) => setState(() => _subscribeNewsletter = val!),
           ),
         ),
@@ -272,17 +310,44 @@ class _SignupScreenState extends State<SignupScreen> {
     return SizedBox(
       width: double.infinity,
       height: 60,
-      child: ElevatedButton(
-        onPressed: () {}, // Trigger Bloc Event
-        style: ElevatedButton.styleFrom(
-          backgroundColor: HColors.primary,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        ),
-        child: const Text("Create Account", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          return ElevatedButton(
+            onPressed: state is AuthLoading ? null : _handleSignup,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: HColors.primary,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+            child: const Text(
+              "Create Account",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          );
+        },
       ),
     );
+  }
+
+  void _handleSignup() {
+    if (_formKey.currentState!.validate() && _agreeToLegal) {
+      context.read<AuthBloc>().add(
+        AuthSignup(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+          username: _usernameController.text.trim(),
+          role: widget.selectedRole.dbValue,
+        ),
+      );
+    } else if (!_agreeToLegal) {
+      showSnackBar(
+        context,
+        "Please agree to the Terms of Service and Privacy Policy",
+      );
+    }
   }
 
   Widget _buildSocialDivider() {
@@ -291,7 +356,10 @@ class _SignupScreenState extends State<SignupScreen> {
         const Expanded(child: Divider(thickness: 0.8)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text("Or join with", style: TextStyle(color: Colors.grey[500], fontSize: 13)),
+          child: Text(
+            "Or join with",
+            style: TextStyle(color: Colors.grey[500], fontSize: 13),
+          ),
         ),
         const Expanded(child: Divider(thickness: 0.8)),
       ],
@@ -304,7 +372,11 @@ class _SignupScreenState extends State<SignupScreen> {
       children: [
         _socialIconButton(FontAwesomeIcons.google, Colors.red, () {}),
         const SizedBox(width: 25),
-        _socialIconButton(FontAwesomeIcons.facebook, const Color(0xFF1877F2), () {}),
+        _socialIconButton(
+          FontAwesomeIcons.facebook,
+          const Color(0xFF1877F2),
+          () {},
+        ),
         const SizedBox(width: 25),
         _socialIconButton(FontAwesomeIcons.github, Colors.black, () {}),
       ],
