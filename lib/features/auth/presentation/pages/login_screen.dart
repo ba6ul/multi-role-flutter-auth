@@ -199,10 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   width: HSizes.spaceBtwInputFields,
                                 ),
                                 Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: _onLoginPressed,
-                                    child: const Text(HTexts.signIn),
-                                  ),
+                                  child: ElevatedButton(onPressed: _onLoginPressed, child: const Text(HTexts.signIn),),
                                 ),
                               ],
                             ),

@@ -4,12 +4,14 @@ class Userprofiles {
   final String id;
   final String email;
   final String name;
+  final String username;
   final String role;
 
   Userprofiles({
     required this.id,
     required this.email,
     required this.name,
+    required this.username,
     required this.role,
   });
 }

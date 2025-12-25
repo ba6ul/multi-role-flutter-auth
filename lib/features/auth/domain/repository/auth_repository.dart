@@ -4,7 +4,7 @@ import 'package:multi_role_flutter_auth/core/error/failure.dart';
 
 abstract interface class AuthRepository {
   Future<Either<Failure, Userprofiles>> signUpWithEmailPassword({  
-    required String name,
+    required String username,
     required String email,
     required String password,
     required String role,

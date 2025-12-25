@@ -6,7 +6,8 @@ abstract interface class AuthRemoteDataSource {
   Session? get currentUserSession;
   
   Future<UserModel> signUpWithEmailPassword({
-    required String name,
+    required String username,
+    //required String name,
     required String email,
     required String password,
     required String role,
@@ -49,7 +50,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<UserModel> signUpWithEmailPassword({
-    required String name,
+    required String username,
+    //required String name,
     required String email,
     required String password,
     required String role,
@@ -58,7 +60,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final response = await supabaseClient.auth.signUp(
         password: password,
         email: email,
-        data: {'name': name, 'role': role},
+        data: {'username': username, 'role': role},
       );
       if (response.user == null) {
         throw const ServerException('User is null!');

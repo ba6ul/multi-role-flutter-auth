@@ -33,6 +33,7 @@ class AuthRepositoryImpl implements AuthRepository {
             id: session.user.id,
             email: session.user.email ?? '',
             name: '',
+            username: '',
             role: '',
           ),
         );
@@ -63,14 +64,15 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, Userprofiles>> signUpWithEmailPassword({
-    required String name,
+    //this String name,
+    required String username,
     required String email,
     required String password,
     required String role,
   }) async {
     try {
       final UserProfiles = await remoteDataSource.signUpWithEmailPassword(
-        name: name,
+        username: username,
         email: email,
         password: password,
         role: role,
