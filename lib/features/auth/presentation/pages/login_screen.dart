@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Your Clean Architecture / Core Imports
 import 'package:multi_role_flutter_auth/core/common/widgets/loader.dart';
+import 'package:multi_role_flutter_auth/core/config/auth_config.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/signup_screen.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/router/dashboard_router.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_field.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/role_selection_page.dart';
-
 
 // Your Utility / Theme Imports
 import 'package:multi_role_flutter_auth/utils/constants/color.dart';
@@ -19,14 +19,9 @@ import 'package:multi_role_flutter_auth/utils/show_snackbar.dart';
 import 'package:multi_role_flutter_auth/utils/validators/validators.dart';
 
 class LoginScreen extends StatefulWidget {
-  static route() => MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      );
+  static route() =>
+      MaterialPageRoute(builder: (context) => const LoginScreen());
   const LoginScreen({super.key});
-
-  // --- MODULAR CONFIGURATION ---
-  static const bool useRoleSelection = false;
-  static const UserRole defaultRole = UserRole.admin;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -48,11 +43,11 @@ class _LoginScreenState extends State<LoginScreen> {
   void _onLoginPressed() {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
-            AuthLogin(
-              email: _emailController.text.trim(),
-              password: _passwordController.text.trim(),
-            ),
-          );
+        AuthLogin(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        ),
+      );
     }
   }
 
@@ -138,14 +133,54 @@ class _LoginScreenState extends State<LoginScreen> {
                               onFieldSubmitted: (_) => _onLoginPressed(),
                             ),
 
-                            const SizedBox(height: HSizes.defaultSpace),
+                            const SizedBox(height: HSizes.defaultSpace / 2),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Remember Me Checkbox
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                    ),
+                                    const Text(HTexts.rememberMe),
+                                  ],
+                                ),
 
+                                // Forgot Password
+                                TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    HTexts.forgetPasswordTitle,
+                                    style: TextStyle(
+                                      color: HColors.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: HSizes.defaultSpace),
+                            Row(
+                              
+                              children: [
+                                Expanded(child: _buildSignupSection(context)),
+                                const SizedBox(
+                                  width: HSizes.spaceBtwInputFields,
+                                ), // Add some gap between them
+                                
+                                Expanded(child: _buildLoginButton()),
+                              ],
+                            ),
+                            const SizedBox(height: HSizes.defaultSpace),
                             // Login Button
-                            _buildLoginButton(),
+                            //_buildLoginButton(),
 
-                            const SizedBox(height: HSizes.defaultSpace),
+                            //const SizedBox(height: HSizes.defaultSpace),
 
-                            _buildSignupSection(context),
+                            //_buildSignupSection(context),
                           ],
                         ),
                       ),
@@ -226,14 +261,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   /// Builds the Signup/Navigation section at the bottom
   Widget _buildSignupSection(BuildContext context) {
-    return Column(
-      children: [
+return
         SizedBox(
           height: 50,
           width: double.infinity,
           child: OutlinedButton(
             onPressed: () {
-              if (LoginScreen.useRoleSelection) {
+              if (AuthConfig.useRoleSelection) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -245,7 +279,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => const SignupScreen(
-                      selectedRole: LoginScreen.defaultRole,
+                      selectedRole: AuthConfig.defaultRole,
                     ),
                   ),
                 );
@@ -263,9 +297,6 @@ class _LoginScreenState extends State<LoginScreen> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
           ),
-        ),
-        const SizedBox(height: 16),
-      ],
-    );
+        );
   }
 }

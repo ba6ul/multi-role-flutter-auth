@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multi_role_flutter_auth/utils/constants/color.dart';
+import 'package:multi_role_flutter_auth/utils/theme/widget_theme/checkbox_theme.dart';
+import 'package:multi_role_flutter_auth/utils/theme/widget_theme/text_theme.dart';
 
 
 class HAppTheme {
@@ -11,11 +13,13 @@ class HAppTheme {
     disabledColor: HColors.grey,
     brightness: Brightness.light,
     primaryColor: HColors.primary,
-    /*
-    textTheme: TTextTheme.lightTextTheme,
-    chipTheme: TChipTheme.lightChipTheme,
+
+    textTheme: HTextTheme.lightTextTheme,
+        /*chipTheme: TChipTheme.lightChipTheme,
     appBarTheme: TAppBarTheme.lightAppBarTheme,
-    checkboxTheme: TCheckboxTheme.lightCheckboxTheme,
+    */
+    checkboxTheme: HCheckboxTheme.lightCheckboxTheme,
+    /*
     scaffoldBackgroundColor: HColors.primaryBackground,
     bottomSheetTheme: TBottomSheetTheme.lightBottomSheetTheme,
     elevatedButtonTheme: TElevatedButtonTheme.lightElevatedButtonTheme,
@@ -29,10 +33,10 @@ class HAppTheme {
     disabledColor: HColors.grey,
     brightness: Brightness.dark,
     primaryColor: HColors.primary,
-    /*textTheme: TTextTheme.darkTextTheme,
+    textTheme: HTextTheme.darkTextTheme,/*
     chipTheme: TChipTheme.darkChipTheme,
-    appBarTheme: TAppBarTheme.darkAppBarTheme,
-    checkboxTheme: TCheckboxTheme.darkCheckboxTheme,*/
+    appBarTheme: TAppBarTheme.darkAppBarTheme,*/
+    checkboxTheme: HCheckboxTheme.darkCheckboxTheme,
     scaffoldBackgroundColor: HColors.primary.withOpacity(0.1),
    /* bottomSheetTheme: TBottomSheetTheme.darkBottomSheetTheme,
     elevatedButtonTheme: TElevatedButtonTheme.darkElevatedButtonTheme,
