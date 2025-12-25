@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HColors.lightBackground,
+      backgroundColor: HColors.primaryBackground,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
@@ -120,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               keyboardType: TextInputType.emailAddress,
                               validator: HValidator.validateEmail,
                             ),
+
                             const SizedBox(height: HSizes.spaceBtwInputFields),
 
                             // Password Field
@@ -165,12 +166,44 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(height: HSizes.defaultSpace),
                             Row(
                               children: [
-                                Expanded(child: _buildSignupSection(context)),
+                                //Expanded(child: _buildSignupSection(context)),
+                                Expanded(
+                                  child: OutlinedButton(
+                                    onPressed: () {
+                                      if (AuthConfig.useRoleSelection) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const RoleSelectionPage(),
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignupScreen(
+                                                  selectedRole:
+                                                      AuthConfig.defaultRole,
+                                                ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: const Text(HTexts.createAccount),
+                                  ),
+                                ),
+
                                 const SizedBox(
                                   width: HSizes.spaceBtwInputFields,
                                 ),
-
-                                Expanded(child: _buildLoginButton()),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: _onLoginPressed,
+                                    child: const Text(HTexts.signIn),
+                                  ),
+                                ),
                               ],
                             ),
                             const SizedBox(height: HSizes.defaultSpace),
@@ -224,69 +257,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  /// Builds the Primary Sign In Button
-  // widgets of its own to avoid rebuilds on Bloc changes
-  Widget _buildLoginButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: ElevatedButton(
-        onPressed: _onLoginPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: HColors.primary,
-          foregroundColor: HColors.secondary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          elevation: 2,
-        ),
-        child: const Text(
-          HTexts.signIn,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-      ),
-    );
-  }
-
-  /// Builds the Signup/Navigation section at the bottom
-  Widget _buildSignupSection(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      width: double.infinity,
-      child: OutlinedButton(
-        onPressed: () {
-          if (AuthConfig.useRoleSelection) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const RoleSelectionPage(),
-              ),
-            );
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    const SignupScreen(selectedRole: AuthConfig.defaultRole),
-              ),
-            );
-          }
-        },
-        style: OutlinedButton.styleFrom(
-          foregroundColor: HColors.primary,
-          side: const BorderSide(color: HColors.primary),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: const Text(
-          HTexts.createAccount,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
       ),
     );
   }
