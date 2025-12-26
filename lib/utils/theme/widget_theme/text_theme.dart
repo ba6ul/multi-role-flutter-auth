@@ -7,6 +7,8 @@ class HTextTheme {
 
   /// Customizable Light Text Theme
   static TextTheme lightTextTheme = TextTheme(
+    // Add this to lightTextTheme
+    displayLarge: const TextStyle().copyWith(fontSize: 32.0, fontWeight: FontWeight.w900, color: HColors.primary, letterSpacing: -1),
     headlineLarge: const TextStyle().copyWith(fontSize: 24.0, fontWeight: FontWeight.bold, color: HColors.textPrimary),
     headlineMedium: const TextStyle().copyWith(fontSize: 18.0, fontWeight: FontWeight.bold, color: HColors.textPrimary),
     headlineSmall: const TextStyle().copyWith(fontSize: 16.0, fontWeight: FontWeight.bold, color: HColors.textPrimary),

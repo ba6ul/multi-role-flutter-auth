@@ -10,8 +10,10 @@ import 'package:multi_role_flutter_auth/features/auth/presentation/pages/signup_
 import 'package:multi_role_flutter_auth/features/auth/presentation/router/dashboard_router.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_field.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/role_selection_page.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/hero_widget.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/social_buttons.dart';
 
-// Your Utility / Theme Imports
+// Utility / Theme Imports
 import 'package:multi_role_flutter_auth/utils/constants/color.dart';
 import 'package:multi_role_flutter_auth/utils/constants/sizes.dart';
 import 'package:multi_role_flutter_auth/utils/constants/text_strings.dart';
@@ -83,7 +85,10 @@ class _LoginScreenState extends State<LoginScreen> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                _buildHeroSection(),
+
+                // Hero Section
+                const HeroWidget(),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: HSizes.spaceBtwSections,
@@ -100,15 +105,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            
+                            // Sign In Text
+                            Text(
                               HTexts.signIn,
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w900,
-                                color: HColors.primary,
-                                letterSpacing: -1,
-                              ),
+                              style: Theme.of(context).textTheme.displayLarge,
                             ),
+
                             const SizedBox(height: HSizes.spaceBtwSections),
 
                             // Email Field
@@ -138,6 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+
                                 // Remember Me Checkbox
                                 Row(
                                   children: [
@@ -164,9 +168,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
 
                             const SizedBox(height: HSizes.defaultSpace),
+                            
                             Row(
                               children: [
-                                //Expanded(child: _buildSignupSection(context)),
                                 Expanded(
                                   child: OutlinedButton(
                                     onPressed: () {
@@ -199,11 +203,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                   width: HSizes.spaceBtwInputFields,
                                 ),
                                 Expanded(
-                                  child: ElevatedButton(onPressed: _onLoginPressed, child: const Text(HTexts.signIn),),
+                                  child: ElevatedButton(
+                                    onPressed: _onLoginPressed,
+                                    child: const Text(HTexts.signIn),
+                                  ),
                                 ),
                               ],
                             ),
                             const SizedBox(height: HSizes.defaultSpace),
+                            
+                            SocialLoginSection(onGoogleTap: () {  }, onFacebookTap: () {  }, onGithubTap: () {  }, onGuestTap: () {  },)
                           ],
                         ),
                       ),
@@ -214,46 +223,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  /// Visual section with Logo and Title
-  // Needs to be its own widget to avoid rebuilds on Bloc changes
-  Widget _buildHeroSection() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.only(top: 80, bottom: 60),
-      decoration: const BoxDecoration(
-        color: HColors.secondary,
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80)),
-      ),
-      child: Column(
-        children: [
-          ShaderMask(
-            shaderCallback: (bounds) => const LinearGradient(
-              colors: [HColors.primary, HColors.primary],
-            ).createShader(bounds),
-            blendMode: BlendMode.srcIn,
-            child: const FlutterLogo(size: 70),
-          ),
-          const SizedBox(height: HSizes.md),
-          const Text(
-            HTexts.appName,
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w800,
-              color: HColors.primary,
-            ),
-          ),
-          Text(
-            HTexts.loginSubTitle,
-            style: TextStyle(
-              color: HColors.primary.withOpacity(0.5),
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
       ),
     );
   }
