@@ -21,9 +21,9 @@ class HAppTheme {
     appBarTheme: TAppBarTheme.lightAppBarTheme,
     */
     checkboxTheme: HCheckboxTheme.lightCheckboxTheme,
-    /*
+
     scaffoldBackgroundColor: HColors.primaryBackground,
-    bottomSheetTheme: TBottomSheetTheme.lightBottomSheetTheme,*/
+        /*bottomSheetTheme: TBottomSheetTheme.lightBottomSheetTheme,*/
     elevatedButtonTheme: HElevatedButtonTheme.lightElevatedButtonTheme,
     outlinedButtonTheme: HOutlinedButtonTheme.lightOutlinedButtonTheme,
     /*inputDecorationTheme: TTextFormFieldTheme.lightInputDecorationTheme,*/

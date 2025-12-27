@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'multi_role_flutter_auth',
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
       theme: HAppTheme.lightTheme,
       darkTheme: HAppTheme.darkTheme,
       home: const LoginScreen(),

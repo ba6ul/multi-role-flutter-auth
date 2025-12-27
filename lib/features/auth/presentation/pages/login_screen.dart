@@ -17,6 +17,7 @@ import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/socia
 import 'package:multi_role_flutter_auth/utils/constants/color.dart';
 import 'package:multi_role_flutter_auth/utils/constants/sizes.dart';
 import 'package:multi_role_flutter_auth/utils/constants/text_strings.dart';
+import 'package:multi_role_flutter_auth/utils/helper/helper_funtion.dart';
 import 'package:multi_role_flutter_auth/utils/show_snackbar.dart';
 import 'package:multi_role_flutter_auth/utils/validators/validators.dart';
 
@@ -55,8 +56,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isdark = true;
     return Scaffold(
-      backgroundColor: HColors.primaryBackground,
+      //backgroundColor: isdark ? HColors.black : HColors.primaryBackground,
+      //backgroundColor: HColors.primaryBackground,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
@@ -211,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                             const SizedBox(height: HSizes.defaultSpace),
-                            
+
                             SocialLoginSection(onGoogleTap: () {  }, onFacebookTap: () {  }, onGithubTap: () {  }, onGuestTap: () {  },)
                           ],
                         ),

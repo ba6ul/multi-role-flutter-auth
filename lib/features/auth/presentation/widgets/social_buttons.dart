@@ -21,7 +21,7 @@ class SocialLoginSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        /// --- Divider ---
+        /// Divider
         Row(
           children: [
             const Expanded(child: Divider(thickness: 0.8)),
@@ -29,7 +29,6 @@ class SocialLoginSection extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: HSizes.md),
               child: Text(
                 "Or join with",
-                // Using your theme for consistency
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
@@ -39,7 +38,7 @@ class SocialLoginSection extends StatelessWidget {
 
         const SizedBox(height: HSizes.spaceBtwSections),
 
-        /// --- Social & Guest Buttons Row ---
+        /// Icons
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -64,9 +63,8 @@ class SocialLoginSection extends StatelessWidget {
             ),
             const SizedBox(width: HSizes.spaceBtwItems),
 
-            /// --- Guest Button (Human Face) ---
             _socialIconButton(
-              icon: FontAwesomeIcons.solidCircleUser, // "Human face" icon
+              icon: FontAwesomeIcons.solidCircleUser,
               color: HColors.primary, 
               onTap: onGuestTap,
               isGuest: true,
@@ -90,9 +88,8 @@ class SocialLoginSection extends StatelessWidget {
         padding: const EdgeInsets.all(HSizes.md),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          // Subtle border to match your design
           border: Border.all(color: HColors.grey.withOpacity(0.5)),
-          // Optional: Add a very light background for the guest button to make it pop
+          // Very light background for the guest button to make it pop
           color: isGuest ? HColors.primary.withOpacity(0.05) : Colors.transparent,
         ),
         child: FaIcon(icon, color: color, size: HSizes.iconMd),
