@@ -63,22 +63,24 @@ class HColors {
 class HColors {
   // -- App Theme Colors
   // Using your preferred trio as the foundation
-  static const Color primary = Color(0xFF212842);      // Midnight Indigo
-  static const Color secondary = Color(0xFFF0E7D5);    // Vanilla Cream
-  static const Color accent = Color(0xFFC5A358);       // Muted Gold
+  static const Color primary = Color(0xFF212842); // Midnight Indigo
+  static const Color secondary = Color(0xFFF0E7D5); // Vanilla Cream
+  static const Color accent = Color(0xFFC5A358); // Muted Gold
 
   // -- Icon Colors
   // Indigo for light mode visibility; Cream/Gold usually handled by theme logic
   static const Color iconPrimary = Color(0xFF212842);
 
   // -- Text Colors
-  static const Color textPrimary = Color(0xFF1A1F33);  // Deepest Indigo (Near Black)
+  static const Color textPrimary = Color(
+    0xFF1A1F33,
+  ); // Deepest Indigo (Near Black)
   static const Color textSecondary = Color(0xFF6B7280); // Muted Grey-Blue
   static const Color textWhite = Colors.white;
 
   // -- Background Colors
-  static const Color light = Color(0xFFFDFBFA);        // Soft Pearl White
-  static const Color dark = Color(0xFF0F1424);         // Deep Midnight Black
+  static const Color light = Color(0xFFFDFBFA); // Soft Pearl White
+  static const Color dark = Color(0xFF0F1424); // Deep Midnight Black
   static const Color primaryBackground = Color(0xFFF9F6F0); // Vanilla Tint
 
   // -- Background Container Colors
@@ -111,5 +113,3 @@ class HColors {
   static const Color lightGrey = Color(0xFFF9F9F9);
   static const Color white = Color(0xFFFFFFFF);
 }
-
-

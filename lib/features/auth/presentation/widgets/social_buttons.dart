@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:multi_role_flutter_auth/utils/constants/color.dart';
-import 'package:multi_role_flutter_auth/utils/constants/sizes.dart';
+import '../../../../utils/constants/color.dart';
+import '../../../../utils/constants/sizes.dart';
 
 class SocialLoginSection extends StatelessWidget {
   const SocialLoginSection({
@@ -24,7 +24,9 @@ class SocialLoginSection extends StatelessWidget {
     // GitHub's brand color is black, which disappears against a dark
     // background — flip it to the light color in dark mode.
     final githubColor = isDark ? HColors.light : HColors.black;
-    final borderColor = isDark ? Colors.white.withValues(alpha: 0.2) : HColors.grey.withValues(alpha: 0.5);
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.2)
+        : HColors.grey.withValues(alpha: 0.5);
 
     return Column(
       children: [

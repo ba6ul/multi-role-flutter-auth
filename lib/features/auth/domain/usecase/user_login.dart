@@ -1,8 +1,8 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:multi_role_flutter_auth/core/common/entities/user_profile.dart';
-import 'package:multi_role_flutter_auth/core/error/failure.dart';
-import 'package:multi_role_flutter_auth/core/usecase/usecase.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/repository/auth_repository.dart';
+import '../entities/user_profile.dart';
+import '../../../../core/error/failure.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../repository/auth_repository.dart';
 
 class UserLogin implements UseCase<UserProfile, UserLoginParams> {
   final AuthRepository authRepository;
@@ -21,8 +21,5 @@ class UserLoginParams {
   final String email;
   final String password;
 
-  UserLoginParams({
-    required this.email,
-    required this.password,
-  });
+  UserLoginParams({required this.email, required this.password});
 }

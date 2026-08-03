@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/utils/constants/color.dart';
-import 'package:multi_role_flutter_auth/utils/theme/widget_theme/checkbox_theme.dart';
-import 'package:multi_role_flutter_auth/utils/theme/widget_theme/elevetad_button.dart';
-import 'package:multi_role_flutter_auth/utils/theme/widget_theme/text_theme.dart';
+import '../constants/color.dart';
+import 'widget_theme/checkbox_theme.dart';
+import 'widget_theme/elevetad_button.dart';
+import 'widget_theme/text_theme.dart';
 import '../theme/widget_theme/outline_button.dart';
-
 
 class HAppTheme {
   HAppTheme._();
@@ -17,13 +16,13 @@ class HAppTheme {
     primaryColor: HColors.primary,
 
     textTheme: HTextTheme.lightTextTheme,
-        /*chipTheme: TChipTheme.lightChipTheme,
+    /*chipTheme: TChipTheme.lightChipTheme,
     appBarTheme: TAppBarTheme.lightAppBarTheme,
     */
     checkboxTheme: HCheckboxTheme.lightCheckboxTheme,
 
     scaffoldBackgroundColor: HColors.primaryBackground,
-        /*bottomSheetTheme: TBottomSheetTheme.lightBottomSheetTheme,*/
+    /*bottomSheetTheme: TBottomSheetTheme.lightBottomSheetTheme,*/
     elevatedButtonTheme: HElevatedButtonTheme.lightElevatedButtonTheme,
     outlinedButtonTheme: HOutlinedButtonTheme.lightOutlinedButtonTheme,
     /*inputDecorationTheme: TTextFormFieldTheme.lightInputDecorationTheme,*/
@@ -35,12 +34,13 @@ class HAppTheme {
     disabledColor: HColors.grey,
     brightness: Brightness.dark,
     primaryColor: HColors.primary,
-    textTheme: HTextTheme.darkTextTheme,/*
+    textTheme: HTextTheme.darkTextTheme,
+    /*
     chipTheme: TChipTheme.darkChipTheme,
     appBarTheme: TAppBarTheme.darkAppBarTheme,*/
     checkboxTheme: HCheckboxTheme.darkCheckboxTheme,
     scaffoldBackgroundColor: HColors.dark,
-   /* bottomSheetTheme: TBottomSheetTheme.darkBottomSheetTheme,*/
+    /* bottomSheetTheme: TBottomSheetTheme.darkBottomSheetTheme,*/
     elevatedButtonTheme: HElevatedButtonTheme.darkElevatedButtonTheme,
     outlinedButtonTheme: HOutlinedButtonTheme.darkOutlinedButtonTheme,
     /*inputDecorationTheme: TTextFormFieldTheme.darkInputDecorationTheme,*/

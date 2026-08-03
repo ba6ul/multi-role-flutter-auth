@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/pages/signup_screen.dart';
+import 'signup_screen.dart';
 import '../../domain/user_role.dart';
 import 'profile_setup_page.dart';
 

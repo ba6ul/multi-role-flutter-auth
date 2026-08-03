@@ -1,7 +1,6 @@
-
 /// This class contains all the App Text in String formats.
 class HTexts {
-// -- GLOBAL Texts
+  // -- GLOBAL Texts
   static const String and = "and";
   static const String skip = "Skip";
   static const String done = "Done";
@@ -30,12 +29,9 @@ class HTexts {
   static const String resendEmail = "Resend Email";
   static const String resendEmailIn = "Resend email in";
 
-
   // -- Authentication Headings
   static const String loginTitle = "Welcome back,";
   static const String loginSubTitle = "Premium Flutter Auth Template";
   static const String signupTitle = "Let’s create your account";
   static const String forgetPasswordTitle = "Forget password";
-  
-
 }

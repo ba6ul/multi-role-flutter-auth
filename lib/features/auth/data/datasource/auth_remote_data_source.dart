@@ -1,7 +1,7 @@
-import 'package:multi_role_flutter_auth/core/config/supabase_schema.dart';
-import 'package:multi_role_flutter_auth/core/error/network_exceptions.dart';
-import 'package:multi_role_flutter_auth/features/auth/data/model/user_model.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
+import '../../config/supabase_schema.dart';
+import '../../../../core/error/network_exceptions.dart';
+import '../model/user_model.dart';
+import '../../domain/user_role.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class AuthRemoteDataSource {

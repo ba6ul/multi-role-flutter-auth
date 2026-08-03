@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:multi_role_flutter_auth/core/config/supabase_schema.dart';
+import '../config/supabase_schema.dart';
 import '../domain/user_role.dart';
 
 /// supabase_services.dart

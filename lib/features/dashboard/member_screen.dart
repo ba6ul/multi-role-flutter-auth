@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/sign_out_button.dart';
+import '../auth/presentation/widgets/sign_out_button.dart';
 
 class MemberScreen extends StatelessWidget {
   final String title;

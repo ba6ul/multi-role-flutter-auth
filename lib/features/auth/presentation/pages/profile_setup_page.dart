@@ -3,10 +3,10 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:math';
 import '../../domain/user_role.dart';
-import 'package:multi_role_flutter_auth/core/config/supabase_schema.dart';
-import 'package:multi_role_flutter_auth/features/auth/data/supabase_services.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/router/dashboard_router.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/dashboard_routes.dart';
+import '../../config/supabase_schema.dart';
+import '../../data/supabase_services.dart';
+import '../router/dashboard_router.dart';
+import '../../../dashboard/dashboard_routes.dart';
 
 /*
  * CUSTOMIZABLE PROFILE SETUP PAGE
@@ -41,30 +41,29 @@ import 'package:multi_role_flutter_auth/features/dashboard/dashboard_routes.dart
 class ProfileSetupPage extends StatefulWidget {
   final UserRole selectedRole;
   static route({required UserRole selectedRole}) => MaterialPageRoute(
-        builder: (context) => ProfileSetupPage(selectedRole: selectedRole),
-      );
+    builder: (context) => ProfileSetupPage(selectedRole: selectedRole),
+  );
 
   const ProfileSetupPage({super.key, required this.selectedRole});
-  
 
   @override
   State<ProfileSetupPage> createState() => _ProfileSetupPageState();
 }
 
 class _ProfileSetupPageState extends State<ProfileSetupPage> {
-final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   // Core fields
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _dobController = TextEditingController();
-  
+
   // Custom fields
   final _field1Controller = TextEditingController();
   final _field2Controller = TextEditingController();
   final _field3Controller = TextEditingController();
-  
+
   // State variables
   bool _isLoading = false;
   String? _errorMessage;
@@ -120,29 +119,28 @@ final _formKey = GlobalKey<FormState>();
           ),
         ),
         actions: [
-    TextButton(
-      onPressed: _handleSkip,
-      child: const Text(
-        'Skip',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-    ),
-    const SizedBox(width: 8),
-  ],
+          TextButton(
+            onPressed: _handleSkip,
+            child: const Text(
+              'Skip',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(width: 8),
+        ],
         backgroundColor: Colors.white,
         foregroundColor: Colors.grey[800],
         elevation: 0,
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Container(
-            height: 1,
-            color: Colors.grey[200],
-          ),
+          child: Container(height: 1, color: Colors.grey[200]),
         ),
       ),
       body: SafeArea(
-        child: _isLoading ? _buildLoadingState() : _buildScrollableForm(horizontalPadding, maxWidth),
+        child: _isLoading
+            ? _buildLoadingState()
+            : _buildScrollableForm(horizontalPadding, maxWidth),
       ),
     );
   }
@@ -152,16 +150,11 @@ final _formKey = GlobalKey<FormState>();
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
-            color: widget.selectedRole.color,
-          ),
+          CircularProgressIndicator(color: widget.selectedRole.color),
           const SizedBox(height: 16),
           Text(
             'Setting up your profile...',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
           ),
         ],
       ),
@@ -169,50 +162,50 @@ final _formKey = GlobalKey<FormState>();
   }
 
   Widget _buildScrollableForm(double horizontalPadding, double maxWidth) {
-  return SingleChildScrollView(
-    physics: const ClampingScrollPhysics(),
-    child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: maxWidth),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 20),
-                
-                // Profile image
-                _buildMobileImageUpload(),
-                
-                const SizedBox(height: 16),
+    return SingleChildScrollView(
+      physics: const ClampingScrollPhysics(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: maxWidth),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 20),
 
-                // Role info
-                _buildCompactRoleInfo(),
-                
-                const SizedBox(height: 24),
+                  // Profile image
+                  _buildMobileImageUpload(),
 
-                // Basic Information Card
-                _buildFormCard(
-                  title: 'Basic Information',
-                  children: [
-                    _buildNameField(),
-                    const SizedBox(height: 12),
-                    _buildEmailField(),
-                    const SizedBox(height: 12),
-                    _buildPhoneField(),
-                    const SizedBox(height: 12),
-                    _buildDOBField(),
-                    const SizedBox(height: 12),
-                   // _buildGenderDropdown(),
-                  ],
-                ),
-                
-                const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-                // Additional Information Card
-                /*_buildFormCard(
+                  // Role info
+                  _buildCompactRoleInfo(),
+
+                  const SizedBox(height: 24),
+
+                  // Basic Information Card
+                  _buildFormCard(
+                    title: 'Basic Information',
+                    children: [
+                      _buildNameField(),
+                      const SizedBox(height: 12),
+                      _buildEmailField(),
+                      const SizedBox(height: 12),
+                      _buildPhoneField(),
+                      const SizedBox(height: 12),
+                      _buildDOBField(),
+                      const SizedBox(height: 12),
+                      // _buildGenderDropdown(),
+                    ],
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Additional Information Card
+                  /*_buildFormCard(
                   title: 'Additional Information',
                   children: [
                     _buildDepartmentDropdown(),
@@ -226,37 +219,35 @@ final _formKey = GlobalKey<FormState>();
                     //_buildCustomField3(),
                   ],
                 ),*/
-                
-                const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                // Error message
-                if (_errorMessage != null) ...[
-                  _buildErrorMessage(),
+                  // Error message
+                  if (_errorMessage != null) ...[
+                    _buildErrorMessage(),
+                    const SizedBox(height: 16),
+                  ],
+
+                  // Submit button
+                  _buildSubmitButton(),
+
+                  const SizedBox(height: 12),
+                  _buildSkipButton(),
+
                   const SizedBox(height: 16),
+
+                  // Additional info
+                  _buildAdditionalInfo(),
+
+                  // Bottom padding for mobile keyboards
+                  const SizedBox(height: 40),
                 ],
-
-                // Submit button
-                _buildSubmitButton(),
-
-                const SizedBox(height: 12),
-                _buildSkipButton(),
-                
-                const SizedBox(height: 16),
-
-                // Additional info
-                _buildAdditionalInfo(),
-                
-                // Bottom padding for mobile keyboards
-                const SizedBox(height: 40),
-              ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   Widget _buildCompactRoleInfo() {
     return Container(
@@ -264,9 +255,7 @@ final _formKey = GlobalKey<FormState>();
       decoration: BoxDecoration(
         color: widget.selectedRole.color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: widget.selectedRole.color.withOpacity(0.2),
-        ),
+        border: Border.all(color: widget.selectedRole.color.withOpacity(0.2)),
       ),
       child: Row(
         children: [
@@ -331,10 +320,7 @@ final _formKey = GlobalKey<FormState>();
           child: _selectedImage != null
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(48),
-                  child: Image.file(
-                    _selectedImage!,
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.file(_selectedImage!, fit: BoxFit.cover),
                 )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -360,7 +346,10 @@ final _formKey = GlobalKey<FormState>();
     );
   }
 
-  Widget _buildFormCard({required String title, required List<Widget> children}) {
+  Widget _buildFormCard({
+    required String title,
+    required List<Widget> children,
+  }) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -466,7 +455,8 @@ final _formKey = GlobalKey<FormState>();
       ),
     );
   }
-/*
+
+  /*
   Widget _buildGenderDropdown() {
     return _buildMobileDropdownField(
       value: _selectedGender,
@@ -601,7 +591,10 @@ final _formKey = GlobalKey<FormState>();
             ),
             filled: true,
             fillColor: enabled ? Colors.grey[50] : Colors.grey[100],
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
             isDense: true,
           ),
           validator: validator,
@@ -609,7 +602,8 @@ final _formKey = GlobalKey<FormState>();
       ],
     );
   }
-/*
+
+  /*
   // Mobile-optimized dropdown field
   Widget _buildMobileDropdownField({
     required String? value,
@@ -681,32 +675,24 @@ final _formKey = GlobalKey<FormState>();
       decoration: BoxDecoration(
         color: Colors.red.withOpacity(0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: Colors.red.withOpacity(0.3),
-        ),
+        border: Border.all(color: Colors.red.withOpacity(0.3)),
       ),
       child: Row(
         children: [
-          const Icon(
-            Icons.error_outline,
-            color: Colors.red,
-            size: 18,
-          ),
+          const Icon(Icons.error_outline, color: Colors.red, size: 18),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               _errorMessage!,
-              style: const TextStyle(
-                color: Colors.red,
-                fontSize: 13,
-              ),
+              style: const TextStyle(color: Colors.red, fontSize: 13),
             ),
           ),
         ],
       ),
     );
   }
-// 1. The Logic: Skips validation and goes straight to Dashboard
+
+  // 1. The Logic: Skips validation and goes straight to Dashboard
   void _handleSkip() {
     Navigator.pushReplacement(
       context,
@@ -735,14 +721,12 @@ final _formKey = GlobalKey<FormState>();
         ),
         child: const Text(
           'Skip for Now',
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
       ),
     );
   }
+
   Widget _buildSubmitButton() {
     return SizedBox(
       height: 48,
@@ -767,10 +751,7 @@ final _formKey = GlobalKey<FormState>();
               )
             : const Text(
                 'Complete Setup',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
               ),
       ),
     );
@@ -785,19 +766,12 @@ final _formKey = GlobalKey<FormState>();
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.info_outline,
-            color: Colors.blue,
-            size: 16,
-          ),
+          Icon(Icons.info_outline, color: Colors.blue, size: 16),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               'You can update your profile information anytime from settings.',
-              style: TextStyle(
-                color: Colors.blue[700],
-                fontSize: 12,
-              ),
+              style: TextStyle(color: Colors.blue[700], fontSize: 12),
             ),
           ),
         ],
@@ -807,7 +781,7 @@ final _formKey = GlobalKey<FormState>();
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
-    
+
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -831,10 +805,7 @@ final _formKey = GlobalKey<FormState>();
                 const SizedBox(height: 16),
                 const Text(
                   'Select Photo',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 16),
                 Row(
@@ -906,10 +877,7 @@ final _formKey = GlobalKey<FormState>();
             const SizedBox(height: 8),
             Text(
               label,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -920,15 +888,16 @@ final _formKey = GlobalKey<FormState>();
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedDate ?? DateTime.now().subtract(const Duration(days: 6570)),
+      initialDate:
+          _selectedDate ?? DateTime.now().subtract(const Duration(days: 6570)),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: widget.selectedRole.color,
-            ),
+            colorScheme: Theme.of(
+              context,
+            ).colorScheme.copyWith(primary: widget.selectedRole.color),
           ),
           child: child!,
         );
@@ -961,21 +930,21 @@ final _formKey = GlobalKey<FormState>();
 
     try {
       final profileData = {
-  SupabaseSchema.userIdColumn: user.id,
-  'email': user.email,
-  'name': _nameController.text.trim(),
-  SupabaseSchema.roleColumn: widget.selectedRole.dbValue,
-  // 'phone': _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : null, // Not in schema
-  'date_of_birth': _selectedDate?.toIso8601String(),
-  // 'gender': _selectedGender, // Not in schema
-  // 'department': _selectedDepartment, // Not in schema
-  // 'location': _selectedLocation, // Not in schema
-  // 'custom_field_1': _field1Controller.text.trim().isNotEmpty ? _field1Controller.text.trim() : null, // Not in schema
-  // 'custom_field_2': _field2Controller.text.trim().isNotEmpty ? _field2Controller.text.trim() : null, // Not in schema
-  // 'custom_field_3': _field3Controller.text.trim().isNotEmpty ? _field3Controller.text.trim() : null, // Not in schema
-  // 'profile_image_url': ..., // Not in schema
-  // 'mobile_number': _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : null, // If you want to use mobile_number instead of phone
-};
+        SupabaseSchema.userIdColumn: user.id,
+        'email': user.email,
+        'name': _nameController.text.trim(),
+        SupabaseSchema.roleColumn: widget.selectedRole.dbValue,
+        // 'phone': _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : null, // Not in schema
+        'date_of_birth': _selectedDate?.toIso8601String(),
+        // 'gender': _selectedGender, // Not in schema
+        // 'department': _selectedDepartment, // Not in schema
+        // 'location': _selectedLocation, // Not in schema
+        // 'custom_field_1': _field1Controller.text.trim().isNotEmpty ? _field1Controller.text.trim() : null, // Not in schema
+        // 'custom_field_2': _field2Controller.text.trim().isNotEmpty ? _field2Controller.text.trim() : null, // Not in schema
+        // 'custom_field_3': _field3Controller.text.trim().isNotEmpty ? _field3Controller.text.trim() : null, // Not in schema
+        // 'profile_image_url': ..., // Not in schema
+        // 'mobile_number': _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : null, // If you want to use mobile_number instead of phone
+      };
 
       final insertResult = await SupabaseService.client
           .from(SupabaseSchema.userProfilesTable)
@@ -1024,7 +993,8 @@ final _formKey = GlobalKey<FormState>();
 
       if (!idAssigned) {
         setState(() {
-          _errorMessage = 'Failed to assign a unique user ID after several attempts.';
+          _errorMessage =
+              'Failed to assign a unique user ID after several attempts.';
         });
         return;
       }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:multi_role_flutter_auth/core/common/cubit/app_user/app_user_cubit.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:multi_role_flutter_auth/features/init_dependencies.dart';
-
+import 'features/auth/presentation/cubit/app_user_cubit.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/init_dependencies.dart';
 
 // Pages
-import 'package:multi_role_flutter_auth/features/auth/presentation/pages/auth_gate.dart';
-import 'package:multi_role_flutter_auth/utils/theme/theme.dart';
+import 'features/auth/presentation/pages/auth_gate.dart';
+import 'utils/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,9 +20,7 @@ void main() async {
         BlocProvider.value(value: serviceLocator<AppUserCubit>()),
 
         // Auth Bloc
-        BlocProvider(
-          create: (_) =>serviceLocator<AuthBloc>(),
-        ),
+        BlocProvider(create: (_) => serviceLocator<AuthBloc>()),
       ],
       child: const MyApp(),
     ),

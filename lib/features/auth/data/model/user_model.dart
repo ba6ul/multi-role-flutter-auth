@@ -1,7 +1,6 @@
-
-import 'package:multi_role_flutter_auth/core/common/entities/user_profile.dart';
-import 'package:multi_role_flutter_auth/core/config/supabase_schema.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
+import '../../domain/entities/user_profile.dart';
+import '../../config/supabase_schema.dart';
+import '../../domain/user_role.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserModel extends UserProfile {
@@ -24,7 +23,8 @@ class UserModel extends UserProfile {
       email: authUser.email ?? '',
       name: username,
       username: username,
-      role: UserRoleExtension.fromDbValue(
+      role:
+          UserRoleExtension.fromDbValue(
             metadata[SupabaseSchema.roleColumn] as String?,
           ) ??
           UserRole.guest,
@@ -39,7 +39,8 @@ class UserModel extends UserProfile {
       email: map['email'] ?? '',
       name: map['name'] ?? map['username'] ?? '',
       username: map['username'] ?? '',
-      role: UserRoleExtension.fromDbValue(
+      role:
+          UserRoleExtension.fromDbValue(
             map[SupabaseSchema.roleColumn] as String?,
           ) ??
           UserRole.guest,

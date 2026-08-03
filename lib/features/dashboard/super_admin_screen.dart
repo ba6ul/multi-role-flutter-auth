@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/sign_out_button.dart';
+import '../auth/presentation/widgets/sign_out_button.dart';
 
 class SuperAdminScreen extends StatelessWidget {
   final String title;
@@ -25,10 +25,7 @@ class SuperAdminScreen extends StatelessWidget {
               color: Colors.blue,
             ),
             const SizedBox(height: 10),
-            const Text(
-              'You are logged in as:',
-              style: TextStyle(fontSize: 16),
-            ),
+            const Text('You are logged in as:', style: TextStyle(fontSize: 16)),
             const SizedBox(height: 4),
             const Text(
               'Super Admin',

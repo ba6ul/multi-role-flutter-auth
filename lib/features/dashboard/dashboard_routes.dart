@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/admin_screen.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/guest_screen.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/lead_screen.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/member_screen.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/super_admin_screen.dart';
+import '../auth/domain/user_role.dart';
+import 'admin_screen.dart';
+import 'guest_screen.dart';
+import 'lead_screen.dart';
+import 'member_screen.dart';
+import 'super_admin_screen.dart';
 
 /// This project's role -> dashboard screen wiring, fed into DashboardRouter.
 /// Swap this map's contents (not the auth module) when reusing the auth

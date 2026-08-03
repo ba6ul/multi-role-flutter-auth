@@ -4,21 +4,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Your Architecture / Core Imports
-import 'package:multi_role_flutter_auth/core/common/widgets/loader.dart';
-import 'package:multi_role_flutter_auth/core/config/auth_config.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/pages/profile_setup_page.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/router/dashboard_router.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_field.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/social_buttons.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/dashboard_routes.dart';
+import '../../../../core/common/widgets/loader.dart';
+import '../../config/auth_config.dart';
+import '../../domain/user_role.dart';
+import '../bloc/auth_bloc.dart';
+import 'profile_setup_page.dart';
+import '../router/dashboard_router.dart';
+import '../widgets/auth_field.dart';
+import '../widgets/social_buttons.dart';
+import '../../../dashboard/dashboard_routes.dart';
 
 // Utility / Theme Imports
-import 'package:multi_role_flutter_auth/utils/constants/color.dart';
-import 'package:multi_role_flutter_auth/utils/constants/sizes.dart';
-import 'package:multi_role_flutter_auth/utils/show_snackbar.dart';
-import 'package:multi_role_flutter_auth/utils/validators/validators.dart';
+import '../../../../utils/constants/color.dart';
+import '../../../../utils/constants/sizes.dart';
+import '../../../../utils/show_snackbar.dart';
+import '../../../../utils/validators/validators.dart';
 
 class SignupScreen extends StatefulWidget {
   final UserRole selectedRole;

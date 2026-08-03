@@ -1,17 +1,17 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:multi_role_flutter_auth/core/common/cubit/app_user/app_user_cubit.dart';
-import 'package:multi_role_flutter_auth/core/config/api_keys.dart';
-import 'package:multi_role_flutter_auth/core/network/connection_checker.dart';
-import 'package:multi_role_flutter_auth/features/auth/data/datasource/auth_remote_data_source.dart';
-import 'package:multi_role_flutter_auth/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/repository/auth_repository.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/usecase/current_user.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_login.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_sign_out.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_signup.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/bloc/auth_bloc.dart';
+import 'auth/presentation/cubit/app_user_cubit.dart';
+import '../core/config/api_keys.dart';
+import '../core/network/connection_checker.dart';
+import 'auth/data/datasource/auth_remote_data_source.dart';
+import 'auth/data/repositories/auth_repository_impl.dart';
+import 'auth/domain/repository/auth_repository.dart';
+import 'auth/domain/usecase/current_user.dart';
+import 'auth/domain/usecase/user_login.dart';
+import 'auth/domain/usecase/user_sign_out.dart';
+import 'auth/domain/usecase/user_signup.dart';
+import 'auth/presentation/bloc/auth_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final serviceLocator = GetIt.instance;
@@ -31,7 +31,6 @@ Future<void> initDependencies() async {
   serviceLocator.registerLazySingleton(() => supabase.client);
   serviceLocator.registerFactory(() => InternetConnection());
 
-
   // Initialize Auth dependencies
   _initAuth();
 }
@@ -41,7 +40,7 @@ void _initAuth() {
   // 1. Register Core/Common dependencies (The missing links!)
   // Register ConnectionChecker (Assuming you have an implementation class)
   serviceLocator.registerFactory<ConnectionChecker>(
-    () => ConnectionCheckerImpl(serviceLocator()), 
+    () => ConnectionCheckerImpl(serviceLocator()),
   );
 
   // Register AppUserCubit (This is needed by AuthBloc)
@@ -81,4 +80,3 @@ void _initAuth() {
     ),
   );
 }
-

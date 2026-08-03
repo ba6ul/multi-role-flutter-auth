@@ -37,8 +37,8 @@
   }*/
 
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/utils/constants/color.dart';
-import 'package:multi_role_flutter_auth/utils/constants/text_strings.dart';
+import '../../../../utils/constants/color.dart';
+import '../../../../utils/constants/text_strings.dart';
 
 class HeroWidget extends StatelessWidget {
   const HeroWidget({super.key});
@@ -53,7 +53,8 @@ class HeroWidget extends StatelessWidget {
     final blockColor = isDark ? HColors.primary : HColors.secondary;
     final accentColor = isDark ? HColors.accent : HColors.primary;
     final titleColor = isDark ? HColors.secondary : HColors.primary;
-    final subtitleColor = (isDark ? HColors.secondary : HColors.primary).withValues(alpha: 0.6);
+    final subtitleColor = (isDark ? HColors.secondary : HColors.primary)
+        .withValues(alpha: 0.6);
 
     return Container(
       width: double.infinity,
@@ -89,10 +90,7 @@ class HeroWidget extends StatelessWidget {
           //App SubTitle
           Text(
             HTexts.loginSubTitle,
-            style: TextStyle(
-              color: subtitleColor,
-              fontWeight: FontWeight.w500,
-            ),
+            style: TextStyle(color: subtitleColor, fontWeight: FontWeight.w500),
           ),
         ],
       ),

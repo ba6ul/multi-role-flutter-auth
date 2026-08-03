@@ -1,5 +1,5 @@
 class HValidator {
-static String? validateEmail(String? value) {
+  static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Email is required.';
     }
@@ -42,12 +42,13 @@ static String? validateEmail(String? value) {
 
     return null;
   }
+
   /// Password Validation For Login
   static String? validateLoginPassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password is required.';
     }
-    
+
     if (value.length < 6) {
       return 'Password must be at least 6 characters.';
     }

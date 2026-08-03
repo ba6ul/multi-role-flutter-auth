@@ -1,15 +1,15 @@
 //lib/feature/auth/data/datasource/auth_repository_impl.dart
 
 import 'package:fpdart/fpdart.dart';
-import 'package:multi_role_flutter_auth/core/common/entities/user_profile.dart';
-import 'package:multi_role_flutter_auth/core/constants/constants.dart';
-import 'package:multi_role_flutter_auth/core/error/failure.dart';
-import 'package:multi_role_flutter_auth/core/error/network_exceptions.dart';
-import 'package:multi_role_flutter_auth/core/network/connection_checker.dart';
-import 'package:multi_role_flutter_auth/features/auth/data/datasource/auth_remote_data_source.dart';
-import 'package:multi_role_flutter_auth/features/auth/data/model/user_model.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/repository/auth_repository.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
+import '../../domain/entities/user_profile.dart';
+import '../../../../core/constants/constants.dart';
+import '../../../../core/error/failure.dart';
+import '../../../../core/error/network_exceptions.dart';
+import '../../../../core/network/connection_checker.dart';
+import '../datasource/auth_remote_data_source.dart';
+import '../model/user_model.dart';
+import '../../domain/repository/auth_repository.dart';
+import '../../domain/user_role.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;

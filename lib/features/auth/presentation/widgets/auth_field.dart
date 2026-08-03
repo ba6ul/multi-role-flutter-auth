@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/utils/constants/color.dart';
-import 'package:multi_role_flutter_auth/utils/constants/sizes.dart';
+import '../../../../utils/constants/color.dart';
+import '../../../../utils/constants/sizes.dart';
 
 class AuthField extends StatefulWidget {
   final String hintText;

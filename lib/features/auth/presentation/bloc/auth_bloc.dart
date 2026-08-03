@@ -1,13 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/core/common/cubit/app_user/app_user_cubit.dart';
-import 'package:multi_role_flutter_auth/core/common/entities/user_profile.dart';
-import 'package:multi_role_flutter_auth/core/usecase/usecase.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/usecase/current_user.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_login.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_sign_out.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_signup.dart';
+import '../cubit/app_user_cubit.dart';
+import '../../domain/entities/user_profile.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../../domain/user_role.dart';
+import '../../domain/usecase/current_user.dart';
+import '../../domain/usecase/user_login.dart';
+import '../../domain/usecase/user_sign_out.dart';
+import '../../domain/usecase/user_signup.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -29,14 +29,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
        _userLogin = userLogin,
        _currentUser = currentUser,
        _userSignOut = userSignOut,
-      _appUserCubit = appUserCubit,
+       _appUserCubit = appUserCubit,
        super(AuthInitial()) {
     on<AuthEvent>((_, emit) => emit(AuthLoading()));
     on<AuthSignup>(_onAuthSignUp);
     on<AuthLogin>(_onAuthLogin);
     on<AuthIsUserLoggedIn>(_isUserLoggedIn);
     on<AuthLogout>(_onAuthLogout);
-
   }
 
   void _isUserLoggedIn(
@@ -50,7 +49,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (r) => _emitAuthSuccess(r, emit),
     );
   }
-
 
   void _onAuthSignUp(AuthSignup event, Emitter<AuthState> emit) async {
     final res = await _userSignUp(
@@ -71,7 +69,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onAuthLogin(AuthLogin event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     final res = await _userLogin(
-     UserLoginParams(email: event.email, password: event.password)
+      UserLoginParams(email: event.email, password: event.password),
     );
 
     res.fold(
@@ -79,10 +77,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (user) => emit(AuthSuccess(user)),
     );
   }
-void _emitAuthSuccess(
-    UserProfile user,
-    Emitter<AuthState> emit,
-  ) {
+
+  void _emitAuthSuccess(UserProfile user, Emitter<AuthState> emit) {
     _appUserCubit.updateUser(user);
     emit(AuthSuccess(user));
   }
@@ -98,5 +94,4 @@ void _emitAuthSuccess(
     // Best-effort remote sign-out — fire and forget, not on the critical path.
     _userSignOut(NoParams());
   }
-
 }

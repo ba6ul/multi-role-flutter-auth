@@ -1,10 +1,9 @@
-
 import 'package:fpdart/fpdart.dart';
-import 'package:multi_role_flutter_auth/core/common/entities/user_profile.dart';
-import 'package:multi_role_flutter_auth/core/error/failure.dart';
-import 'package:multi_role_flutter_auth/core/usecase/usecase.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/repository/auth_repository.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
+import '../entities/user_profile.dart';
+import '../../../../core/error/failure.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../repository/auth_repository.dart';
+import '../user_role.dart';
 
 class UserSignUp implements UseCase<UserProfile, UserSignUpParams> {
   final AuthRepository authRepository;

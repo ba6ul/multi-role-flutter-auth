@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:multi_role_flutter_auth/features/auth/presentation/pages/auth_gate.dart';
+import '../bloc/auth_bloc.dart';
+import '../pages/auth_gate.dart';
 
 /// Drop into a dashboard's AppBar actions. Dispatches AuthLogout and
 /// navigates back to AuthGate once the bloc confirms the sign-out.

@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:multi_role_flutter_auth/core/common/entities/user_profile.dart';
-import 'package:multi_role_flutter_auth/core/error/failure.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
+import '../entities/user_profile.dart';
+import '../../../../core/error/failure.dart';
+import '../user_role.dart';
 
 abstract interface class AuthRepository {
   Future<Either<Failure, UserProfile>> signUpWithEmailPassword({

@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:multi_role_flutter_auth/core/error/failure.dart';
-import 'package:multi_role_flutter_auth/core/usecase/usecase.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/repository/auth_repository.dart';
+import '../../../../core/error/failure.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../repository/auth_repository.dart';
 
 class UserSignOut implements UseCase<void, NoParams> {
   final AuthRepository authRepository;

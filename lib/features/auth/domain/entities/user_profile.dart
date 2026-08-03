@@ -1,4 +1,4 @@
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
+import '../user_role.dart';
 
 class UserProfile {
   final String id;
