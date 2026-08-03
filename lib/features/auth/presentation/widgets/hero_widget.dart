@@ -39,25 +39,34 @@
 import 'package:flutter/material.dart';
 import 'package:multi_role_flutter_auth/utils/constants/color.dart';
 import 'package:multi_role_flutter_auth/utils/constants/text_strings.dart';
-import 'package:multi_role_flutter_auth/utils/theme/widget_theme/text_theme.dart';
 
 class HeroWidget extends StatelessWidget {
   const HeroWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Dark mode inverts the brand palette: an indigo block (a step lighter
+    // than the near-black scaffold behind it) with cream/gold text, instead
+    // of the light mode's cream block with indigo text.
+    final blockColor = isDark ? HColors.primary : HColors.secondary;
+    final accentColor = isDark ? HColors.accent : HColors.primary;
+    final titleColor = isDark ? HColors.secondary : HColors.primary;
+    final subtitleColor = (isDark ? HColors.secondary : HColors.primary).withValues(alpha: 0.6);
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(top: 80, bottom: 60),
-      decoration: const BoxDecoration(
-        color: HColors.secondary,
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80)),
+      decoration: BoxDecoration(
+        color: blockColor,
+        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(80)),
       ),
       child: Column(
         children: [
           ShaderMask(
-            shaderCallback: (bounds) => const LinearGradient(
-              colors: [HColors.primary ,  HColors.primary],
+            shaderCallback: (bounds) => LinearGradient(
+              colors: [accentColor, accentColor],
             ).createShader(bounds),
             blendMode: BlendMode.srcIn,
 
@@ -70,16 +79,18 @@ class HeroWidget extends StatelessWidget {
           //App Name
           Text(
             HTexts.appName,
-            style: HTextTheme.lightTextTheme.headlineLarge?.copyWith(
-             fontWeight: FontWeight.w800,
-            ),),
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.w800,
+              color: titleColor,
+            ),
+          ),
 
           //App SubTitle
           Text(
             HTexts.loginSubTitle,
-            
             style: TextStyle(
-              color: HColors.primary.withOpacity(0.5),
+              color: subtitleColor,
               fontWeight: FontWeight.w500,
             ),
           ),

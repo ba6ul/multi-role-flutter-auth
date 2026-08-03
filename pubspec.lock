@@ -249,7 +249,7 @@ packages:
     source: hosted
     version: "10.9.1"
   fpdart:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: fpdart
       sha256: f8e9d0989ba293946673e382c59ac513e30cb6746a9452df195f29e3357a73d4

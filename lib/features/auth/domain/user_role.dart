@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 /// - `displayName`: A user-friendly label for UI
 /// - `dbValue`: Maps enum to Supabase-friendly string values
 /// - `icon`: Assigns an icon to each role for UI components
+/// - `color`: Assigns a color to each role for UI components
+/// - `description`: A short explanation of the role's access level
 /// - `fromDbValue`: Converts Supabase string back to enum
 /// - `prefix`: A short custom string used for things like ID tags or role codes
 ///
@@ -62,6 +64,36 @@ extension UserRoleExtension on UserRole {
         return Icons.admin_panel_settings;
       case UserRole.superadmin:
         return Icons.security;
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case UserRole.guest:
+        return Colors.green;
+      case UserRole.member:
+        return Colors.blue;
+      case UserRole.lead:
+        return Colors.orange;
+      case UserRole.admin:
+        return Colors.purple;
+      case UserRole.superadmin:
+        return Colors.red;
+    }
+  }
+
+  String get description {
+    switch (this) {
+      case UserRole.guest:
+        return 'Limited access to basic features';
+      case UserRole.member:
+        return 'Standard access to core features';
+      case UserRole.lead:
+        return 'Team management and oversight';
+      case UserRole.admin:
+        return 'Full administrative privileges';
+      case UserRole.superadmin:
+        return 'Complete system control';
     }
   }
 

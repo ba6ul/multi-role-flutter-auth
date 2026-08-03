@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/admin_screen.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/guest_screen.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/lead_screen.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/member_screen.dart';
-import 'package:multi_role_flutter_auth/features/dashboard/super_admin_screen.dart';
 import '../../domain/user_role.dart';
 
-//Page router
+/// Routes to a role's dashboard screen.
+///
+/// This widget has no knowledge of any concrete dashboard screens — the
+/// consuming app supplies [routes], a `UserRole -> WidgetBuilder` map (see
+/// `lib/features/dashboard/dashboard_routes.dart` for this project's map).
+/// This keeps the auth module portable: dropping it into another project
+/// only requires supplying a different map, not editing this file.
 class DashboardRouter extends StatelessWidget {
   final UserRole role;
+  final Map<UserRole, WidgetBuilder> routes;
 
-  const DashboardRouter({super.key, required this.role});
-
-  static final Map<UserRole, Widget Function()> _routes = {
-    UserRole.guest: () => const GuestScreen(),
-    UserRole.member: () => const MemberScreen(),
-    UserRole.lead: () => const LeadScreen(),
-    UserRole.admin: () => const AdminScreen(),
-    UserRole.superadmin: () => const SuperAdminScreen(),
-  };
+  const DashboardRouter({super.key, required this.role, required this.routes});
 
   @override
   Widget build(BuildContext context) {
-    return _routes[role]?.call() ?? const GuestScreen();
+    final builder = routes[role];
+    if (builder == null) {
+      return Scaffold(
+        body: Center(
+          child: Text('No dashboard registered for role: ${role.displayName}'),
+        ),
+      );
+    }
+    return builder(context);
   }
 }
 

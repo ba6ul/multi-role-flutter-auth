@@ -1,16 +1,15 @@
 //lib/feature/auth/data/datasource/auth_repository_impl.dart
 
 import 'package:fpdart/fpdart.dart';
-import 'package:multi_role_flutter_auth/core/common/entities/user_entity.dart';
+import 'package:multi_role_flutter_auth/core/common/entities/user_profile.dart';
 import 'package:multi_role_flutter_auth/core/constants/constants.dart';
 import 'package:multi_role_flutter_auth/core/error/failure.dart';
 import 'package:multi_role_flutter_auth/core/error/network_exceptions.dart';
 import 'package:multi_role_flutter_auth/core/network/connection_checker.dart';
 import 'package:multi_role_flutter_auth/features/auth/data/datasource/auth_remote_data_source.dart';
 import 'package:multi_role_flutter_auth/features/auth/data/model/user_model.dart';
-//import 'package:multi_role_flutter_auth/features/auth/domain/entities/userprofiles.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/repository/auth_repository.dart';
-//import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
+import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -19,7 +18,7 @@ class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl(this.remoteDataSource, this.connectionChecker);
 
   @override
-  Future<Either<Failure, Userprofiles>> currentUser() async {
+  Future<Either<Failure, UserProfile>> currentUser() async {
     try {
       if (!await (connectionChecker.isConnected)) {
         final session = remoteDataSource.currentUserSession;
@@ -34,7 +33,7 @@ class AuthRepositoryImpl implements AuthRepository {
             email: session.user.email ?? '',
             name: '',
             username: '',
-            role: '',
+            role: UserRole.guest,
           ),
         );
       }
@@ -50,7 +49,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, Userprofiles>> loginWithEmailPassword({
+  Future<Either<Failure, UserProfile>> loginWithEmailPassword({
     required String email,
     required String password,
   }) async {
@@ -63,29 +62,28 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, Userprofiles>> signUpWithEmailPassword({
-    //this String name,
+  Future<Either<Failure, UserProfile>> signUpWithEmailPassword({
     required String username,
     required String email,
     required String password,
-    required String role,
+    required UserRole role,
   }) async {
     try {
-      final UserProfiles = await remoteDataSource.signUpWithEmailPassword(
+      final userProfile = await remoteDataSource.signUpWithEmailPassword(
         username: username,
         email: email,
         password: password,
         role: role,
       );
 
-      return right(UserProfiles);
+      return right(userProfile);
     } on NetworkException catch (e) {
       return left(Failure(e.message));
     }
   }
 
-  Future<Either<Failure, Userprofiles>> _getUser(
-    Future<Userprofiles> Function() fn,
+  Future<Either<Failure, UserProfile>> _getUser(
+    Future<UserProfile> Function() fn,
   ) async {
     try {
       if (!await (connectionChecker.isConnected)) {

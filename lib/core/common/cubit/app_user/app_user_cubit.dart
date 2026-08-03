@@ -1,14 +1,13 @@
-//import 'package:blog_app/core/common/entities/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/entities/userprofiles.dart';
+import 'package:multi_role_flutter_auth/core/common/entities/user_profile.dart';
 
 part 'app_user_state.dart';
 
 class AppUserCubit extends Cubit<AppUserState> {
   AppUserCubit() : super(AppUserInitial());
 
-  void updateUser(UserProfiles? user) {
+  void updateUser(UserProfile? user) {
     if (user == null) {
       emit(AppUserInitial());
     } else {

@@ -1,7 +1,10 @@
 
-import 'package:multi_role_flutter_auth/core/common/entities/user_entity.dart';
+import 'package:multi_role_flutter_auth/core/common/entities/user_profile.dart';
+import 'package:multi_role_flutter_auth/core/config/supabase_schema.dart';
+import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class UserModel extends Userprofiles {
+class UserModel extends UserProfile {
   UserModel({
     required super.id,
     required super.email,
@@ -10,23 +13,45 @@ class UserModel extends Userprofiles {
     required super.role,
   });
 
-  // Factory to create a UserModel from Supabase JSON response
-  factory UserModel.fromJson(Map<String, dynamic> map) {
+  /// Builds from a Supabase Auth [User] — used right after signup/login,
+  /// before a `user_profiles` row necessarily exists. Role/username come
+  /// from auth metadata (set once at signup, not kept in sync afterward).
+  factory UserModel.fromAuthUser(User authUser) {
+    final metadata = authUser.userMetadata ?? {};
+    final username = metadata['username'] as String? ?? '';
     return UserModel(
-      id: map['user_id'] ?? '',
-      email: map['email'] ?? '',
-      name: map['username'] ?? '',
-      username: map['username'] ?? '',
-      // Convert String back to Enum
-      role: map['role'] ?? '',
+      id: authUser.id,
+      email: authUser.email ?? '',
+      name: username,
+      username: username,
+      role: UserRoleExtension.fromDbValue(
+            metadata[SupabaseSchema.roleColumn] as String?,
+          ) ??
+          UserRole.guest,
     );
   }
+
+  /// Builds from a `user_profiles` table row — the authoritative source of
+  /// profile/role data once ProfileSetupPage has run.
+  factory UserModel.fromProfileRow(Map<String, dynamic> map) {
+    return UserModel(
+      id: map[SupabaseSchema.userIdColumn] ?? '',
+      email: map['email'] ?? '',
+      name: map['name'] ?? map['username'] ?? '',
+      username: map['username'] ?? '',
+      role: UserRoleExtension.fromDbValue(
+            map[SupabaseSchema.roleColumn] as String?,
+          ) ??
+          UserRole.guest,
+    );
+  }
+
   UserModel copyWith({
     String? id,
     String? email,
     String? name,
     String? username,
-    String? role,
+    UserRole? role,
   }) {
     return UserModel(
       id: id ?? this.id,

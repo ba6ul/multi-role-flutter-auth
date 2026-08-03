@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_role_flutter_auth/core/common/cubit/app_user/app_user_cubit.dart';
-import 'package:multi_role_flutter_auth/core/common/entities/user_entity.dart';
+import 'package:multi_role_flutter_auth/core/common/entities/user_profile.dart';
 import 'package:multi_role_flutter_auth/core/usecase/usecase.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/entities/userprofiles.dart';
+import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/usecase/current_user.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_login.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_signup.dart';
@@ -75,10 +75,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 void _emitAuthSuccess(
-    Userprofiles user,
+    UserProfile user,
     Emitter<AuthState> emit,
   ) {
-    _appUserCubit.updateUser(user as UserProfiles?);
+    _appUserCubit.updateUser(user);
     emit(AuthSuccess(user));
   }
 

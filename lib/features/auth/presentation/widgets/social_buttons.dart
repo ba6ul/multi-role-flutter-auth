@@ -19,6 +19,13 @@ class SocialLoginSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accentColor = isDark ? HColors.accent : HColors.primary;
+    // GitHub's brand color is black, which disappears against a dark
+    // background — flip it to the light color in dark mode.
+    final githubColor = isDark ? HColors.light : HColors.black;
+    final borderColor = isDark ? Colors.white.withValues(alpha: 0.2) : HColors.grey.withValues(alpha: 0.5);
+
     return Column(
       children: [
         /// Divider
@@ -43,29 +50,33 @@ class SocialLoginSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _socialIconButton(
-              icon: FontAwesomeIcons.google, 
-              color: const Color(0xFFDB4437), 
-              onTap: onGoogleTap
+              icon: FontAwesomeIcons.google,
+              color: const Color(0xFFDB4437),
+              borderColor: borderColor,
+              onTap: onGoogleTap,
             ),
             const SizedBox(width: HSizes.spaceBtwItems),
-            
+
             _socialIconButton(
-              icon: FontAwesomeIcons.facebook, 
-              color: const Color(0xFF1877F2), 
-              onTap: onFacebookTap
+              icon: FontAwesomeIcons.facebook,
+              color: const Color(0xFF1877F2),
+              borderColor: borderColor,
+              onTap: onFacebookTap,
             ),
             const SizedBox(width: HSizes.spaceBtwItems),
-            
+
             _socialIconButton(
-              icon: FontAwesomeIcons.github, 
-              color: HColors.black, 
-              onTap: onGithubTap
+              icon: FontAwesomeIcons.github,
+              color: githubColor,
+              borderColor: borderColor,
+              onTap: onGithubTap,
             ),
             const SizedBox(width: HSizes.spaceBtwItems),
 
             _socialIconButton(
               icon: FontAwesomeIcons.solidCircleUser,
-              color: HColors.primary, 
+              color: accentColor,
+              borderColor: borderColor,
               onTap: onGuestTap,
               isGuest: true,
             ),
@@ -76,8 +87,9 @@ class SocialLoginSection extends StatelessWidget {
   }
 
   Widget _socialIconButton({
-    required IconData icon, 
-    required Color color, 
+    required IconData icon,
+    required Color color,
+    required Color borderColor,
     required VoidCallback onTap,
     bool isGuest = false,
   }) {
@@ -88,9 +100,9 @@ class SocialLoginSection extends StatelessWidget {
         padding: const EdgeInsets.all(HSizes.md),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: HColors.grey.withOpacity(0.5)),
+          border: Border.all(color: borderColor),
           // Very light background for the guest button to make it pop
-          color: isGuest ? HColors.primary.withOpacity(0.05) : Colors.transparent,
+          color: isGuest ? color.withValues(alpha: 0.08) : Colors.transparent,
         ),
         child: FaIcon(icon, color: color, size: HSizes.iconMd),
       ),

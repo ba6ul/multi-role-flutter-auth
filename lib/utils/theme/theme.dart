@@ -39,7 +39,7 @@ class HAppTheme {
     chipTheme: TChipTheme.darkChipTheme,
     appBarTheme: TAppBarTheme.darkAppBarTheme,*/
     checkboxTheme: HCheckboxTheme.darkCheckboxTheme,
-    scaffoldBackgroundColor: HColors.primary.withOpacity(0.1),
+    scaffoldBackgroundColor: HColors.dark,
    /* bottomSheetTheme: TBottomSheetTheme.darkBottomSheetTheme,*/
     elevatedButtonTheme: HElevatedButtonTheme.darkElevatedButtonTheme,
     outlinedButtonTheme: HOutlinedButtonTheme.darkOutlinedButtonTheme,

@@ -127,10 +127,10 @@ class RoleSelectionPage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: _getRoleColor(role).withOpacity(0.1),
+                    color: role.color.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(role.icon, size: 28, color: _getRoleColor(role)),
+                  child: Icon(role.icon, size: 28, color: role.color),
                 ),
                 const SizedBox(width: 18),
                 Expanded(
@@ -147,7 +147,7 @@ class RoleSelectionPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        _getRoleDescription(role),
+                        role.description,
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[600],
@@ -175,40 +175,6 @@ class RoleSelectionPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _getRoleColor(UserRole role) {
-    switch (role) {
-      case UserRole.guest:
-        return Colors.green;
-      case UserRole.member:
-        return Colors.blue;
-      case UserRole.lead:
-        return Colors.orange;
-      case UserRole.admin:
-        return Colors.purple;
-      case UserRole.superadmin:
-        return Colors.red;
-      //default:
-      //return Colors.blue;
-    }
-  }
-
-  String _getRoleDescription(UserRole role) {
-    switch (role) {
-      case UserRole.guest:
-        return 'Limited access to basic features';
-      case UserRole.member:
-        return 'Standard access to core features';
-      case UserRole.lead:
-        return 'Team management and oversight';
-      case UserRole.admin:
-        return 'Full administrative privileges';
-      case UserRole.superadmin:
-        return 'Complete system control';
-      //default:
-      //return 'Role description';
-    }
   }
 
   void _handleRoleSelection(BuildContext context, UserRole role) {

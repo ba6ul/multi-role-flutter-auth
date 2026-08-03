@@ -1,23 +1,22 @@
 
 import 'package:fpdart/fpdart.dart';
-import 'package:multi_role_flutter_auth/core/common/entities/user_entity.dart';
+import 'package:multi_role_flutter_auth/core/common/entities/user_profile.dart';
 import 'package:multi_role_flutter_auth/core/error/failure.dart';
 import 'package:multi_role_flutter_auth/core/usecase/usecase.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/repository/auth_repository.dart';
+import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 
-
-class UserSignUp implements UseCase<Userprofiles, UserSignUpParams> {
+class UserSignUp implements UseCase<UserProfile, UserSignUpParams> {
   final AuthRepository authRepository;
   const UserSignUp(this.authRepository);
 
   @override
-  Future<Either<Failure, Userprofiles>> call(UserSignUpParams params) async {
+  Future<Either<Failure, UserProfile>> call(UserSignUpParams params) async {
     return await authRepository.signUpWithEmailPassword(
       username: params.username,
       email: params.email,
       password: params.password,
       role: params.role,
-
     );
   }
 }
@@ -26,7 +25,7 @@ class UserSignUpParams {
   final String email;
   final String password;
   final String username;
-  final String role;
+  final UserRole role;
   UserSignUpParams({
     required this.email,
     required this.password,

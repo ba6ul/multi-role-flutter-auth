@@ -11,6 +11,7 @@ import 'package:multi_role_flutter_auth/features/auth/presentation/bloc/auth_blo
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/profile_setup_page.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/router/dashboard_router.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_field.dart';
+import 'package:multi_role_flutter_auth/features/dashboard/dashboard_routes.dart';
 
 // Utility / Theme Imports
 import 'package:multi_role_flutter_auth/utils/constants/color.dart';
@@ -82,7 +83,10 @@ class _SignupScreenState extends State<SignupScreen> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-            builder: (context) => DashboardRouter(role: widget.selectedRole),
+            builder: (context) => DashboardRouter(
+              role: widget.selectedRole,
+              routes: appDashboardRoutes,
+            ),
           ), // Replace with your DashboardPage()
                 (route) => false, // Clears the navigation stack
               );
@@ -339,7 +343,7 @@ class _SignupScreenState extends State<SignupScreen> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
           username: _usernameController.text.trim(),
-          role: widget.selectedRole.dbValue,
+          role: widget.selectedRole,
         ),
       );
     } else if (!_agreeToLegal) {

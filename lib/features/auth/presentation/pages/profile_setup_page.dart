@@ -3,8 +3,10 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:math';
 import '../../domain/user_role.dart';
+import 'package:multi_role_flutter_auth/core/config/supabase_schema.dart';
 import 'package:multi_role_flutter_auth/features/auth/data/supabase_services.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/router/dashboard_router.dart';
+import 'package:multi_role_flutter_auth/features/dashboard/dashboard_routes.dart';
 
 /*
  * CUSTOMIZABLE PROFILE SETUP PAGE
@@ -99,21 +101,6 @@ final _formKey = GlobalKey<FormState>();
     super.dispose();
   }
 
-  Color _getRoleColor(UserRole role) {
-    switch (role) {
-      case UserRole.guest:
-        return Colors.green;
-      case UserRole.member:
-        return Colors.blue;
-      case UserRole.lead:
-        return Colors.orange;
-      case UserRole.admin:
-        return Colors.purple;
-      case UserRole.superadmin:
-        return Colors.red;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // Get screen dimensions for responsive design
@@ -166,7 +153,7 @@ final _formKey = GlobalKey<FormState>();
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            color: _getRoleColor(widget.selectedRole),
+            color: widget.selectedRole.color,
           ),
           const SizedBox(height: 16),
           Text(
@@ -275,17 +262,17 @@ final _formKey = GlobalKey<FormState>();
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: _getRoleColor(widget.selectedRole).withOpacity(0.1),
+        color: widget.selectedRole.color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: _getRoleColor(widget.selectedRole).withOpacity(0.2),
+          color: widget.selectedRole.color.withOpacity(0.2),
         ),
       ),
       child: Row(
         children: [
           Icon(
             widget.selectedRole.icon,
-            color: _getRoleColor(widget.selectedRole),
+            color: widget.selectedRole.color,
             size: 20,
           ),
           const SizedBox(width: 12),
@@ -295,14 +282,14 @@ final _formKey = GlobalKey<FormState>();
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: _getRoleColor(widget.selectedRole),
+                color: widget.selectedRole.color,
               ),
             ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
-              color: _getRoleColor(widget.selectedRole),
+              color: widget.selectedRole.color,
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Text(
@@ -330,7 +317,7 @@ final _formKey = GlobalKey<FormState>();
             color: Colors.white,
             borderRadius: BorderRadius.circular(50),
             border: Border.all(
-              color: _getRoleColor(widget.selectedRole).withOpacity(0.3),
+              color: widget.selectedRole.color.withOpacity(0.3),
               width: 2,
             ),
             boxShadow: [
@@ -355,13 +342,13 @@ final _formKey = GlobalKey<FormState>();
                     Icon(
                       Icons.add_a_photo,
                       size: 28,
-                      color: _getRoleColor(widget.selectedRole),
+                      color: widget.selectedRole.color,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Photo',
                       style: TextStyle(
-                        color: _getRoleColor(widget.selectedRole),
+                        color: widget.selectedRole.color,
                         fontWeight: FontWeight.w600,
                         fontSize: 11,
                       ),
@@ -396,7 +383,7 @@ final _formKey = GlobalKey<FormState>();
                 width: 3,
                 height: 16,
                 decoration: BoxDecoration(
-                  color: _getRoleColor(widget.selectedRole),
+                  color: widget.selectedRole.color,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -610,7 +597,7 @@ final _formKey = GlobalKey<FormState>();
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: _getRoleColor(widget.selectedRole)),
+              borderSide: BorderSide(color: widget.selectedRole.color),
             ),
             filled: true,
             fillColor: enabled ? Colors.grey[50] : Colors.grey[100],
@@ -669,7 +656,7 @@ final _formKey = GlobalKey<FormState>();
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: _getRoleColor(widget.selectedRole)),
+              borderSide: BorderSide(color: widget.selectedRole.color),
             ),
             filled: true,
             fillColor: Colors.grey[50],
@@ -724,7 +711,10 @@ final _formKey = GlobalKey<FormState>();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => DashboardRouter(role: widget.selectedRole),
+        builder: (context) => DashboardRouter(
+          role: widget.selectedRole,
+          routes: appDashboardRoutes,
+        ),
       ),
     );
   }
@@ -759,7 +749,7 @@ final _formKey = GlobalKey<FormState>();
       child: ElevatedButton(
         onPressed: _isLoading ? null : _submitProfile,
         style: ElevatedButton.styleFrom(
-          backgroundColor: _getRoleColor(widget.selectedRole),
+          backgroundColor: widget.selectedRole.color,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -912,7 +902,7 @@ final _formKey = GlobalKey<FormState>();
         ),
         child: Column(
           children: [
-            Icon(icon, size: 32, color: _getRoleColor(widget.selectedRole)),
+            Icon(icon, size: 32, color: widget.selectedRole.color),
             const SizedBox(height: 8),
             Text(
               label,
@@ -937,7 +927,7 @@ final _formKey = GlobalKey<FormState>();
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: _getRoleColor(widget.selectedRole),
+              primary: widget.selectedRole.color,
             ),
           ),
           child: child!,
@@ -971,10 +961,10 @@ final _formKey = GlobalKey<FormState>();
 
     try {
       final profileData = {
-  'user_id': user.id,
+  SupabaseSchema.userIdColumn: user.id,
   'email': user.email,
   'name': _nameController.text.trim(),
-  'role': widget.selectedRole.name,
+  SupabaseSchema.roleColumn: widget.selectedRole.dbValue,
   // 'phone': _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : null, // Not in schema
   'date_of_birth': _selectedDate?.toIso8601String(),
   // 'gender': _selectedGender, // Not in schema
@@ -988,7 +978,7 @@ final _formKey = GlobalKey<FormState>();
 };
 
       final insertResult = await SupabaseService.client
-          .from('user_profiles')
+          .from(SupabaseSchema.userProfilesTable)
           .insert(profileData)
           .select()
           .maybeSingle();
@@ -1009,9 +999,9 @@ final _formKey = GlobalKey<FormState>();
 
         try {
           final updateResult = await SupabaseService.client
-              .from('user_profiles')
-              .update({'custom_user_id': customUserId})
-              .eq('user_id', user.id)
+              .from(SupabaseSchema.userProfilesTable)
+              .update({SupabaseSchema.customUserIdColumn: customUserId})
+              .eq(SupabaseSchema.userIdColumn, user.id)
               .select()
               .maybeSingle();
 
@@ -1043,7 +1033,10 @@ final _formKey = GlobalKey<FormState>();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => DashboardRouter(role: widget.selectedRole),
+            builder: (context) => DashboardRouter(
+              role: widget.selectedRole,
+              routes: appDashboardRoutes,
+            ),
           ),
         );
       }
@@ -1067,9 +1060,9 @@ final _formKey = GlobalKey<FormState>();
       final candidateId = '$prefix${number.toString().padLeft(4, '0')}';
 
       final existing = await SupabaseService.client
-          .from('user_profiles')
-          .select('custom_user_id')
-          .eq('custom_user_id', candidateId)
+          .from(SupabaseSchema.userProfilesTable)
+          .select(SupabaseSchema.customUserIdColumn)
+          .eq(SupabaseSchema.customUserIdColumn, candidateId)
           .maybeSingle();
 
       if (existing == null) {

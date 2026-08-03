@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_role_flutter_auth/utils/constants/color.dart';
-//import 'package:multi_role_flutter_auth/utils/constants/colors.dart';
 import 'package:multi_role_flutter_auth/utils/constants/sizes.dart';
-import 'package:multi_role_flutter_auth/utils/validators/validators.dart';
 
 class AuthField extends StatefulWidget {
   final String hintText;
@@ -37,33 +35,39 @@ class _AuthFieldState extends State<AuthField> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final textColor = isDark ? HColors.light : HColors.textPrimary;
+    final labelColor = isDark ? HColors.light.withValues(alpha: 0.7) : HColors.textSecondary.withValues(alpha: 0.8);
+    final hintColor = isDark ? HColors.light.withValues(alpha: 0.4) : HColors.textSecondary.withValues(alpha: 0.5);
+    // Gold accent in dark mode reads far better against the near-black
+    // background than the indigo primary, which nearly disappears there.
+    final accentColor = isDark ? HColors.accent : HColors.primary;
+    final fillColor = isDark ? HColors.darkContainer : HColors.white;
+    final enabledBorderColor = isDark ? Colors.white.withValues(alpha: 0.15) : HColors.borderSecondary.withValues(alpha: 0.5);
+
     return TextFormField(
       controller: widget.controller,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: HSizes.fontSizeMd,
-        color: HColors.textPrimary,
+        color: textColor,
       ),
       keyboardType: widget.keyboardType ?? TextInputType.text,
       textInputAction: widget.textInputAction ?? TextInputAction.next,
       obscureText: widget.obscureText && !_isPasswordVisible,
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,
-      cursorColor: HColors.primary,
+      cursorColor: accentColor,
       decoration: InputDecoration(
         labelText: widget.labelText,
-        labelStyle: TextStyle(
-          color: HColors.textSecondary.withValues(alpha: 0.8),
-        ),
+        labelStyle: TextStyle(color: labelColor),
         hintText: widget.hintText,
-        hintStyle: TextStyle(
-          color: HColors.textSecondary.withValues(alpha: 0.5),
-          fontSize: HSizes.fontSizeSm,
-        ),
+        hintStyle: TextStyle(color: hintColor, fontSize: HSizes.fontSizeSm),
 
         // Prefix Icon Styling
         prefixIcon: Icon(
           widget.prefixIcon,
-          color: HColors.primary,
+          color: accentColor,
           size: HSizes.iconMd,
         ),
 
@@ -74,7 +78,7 @@ class _AuthFieldState extends State<AuthField> {
                   _isPasswordVisible
                       ? Icons.visibility_off_rounded
                       : Icons.visibility_rounded,
-                  color: HColors.primary.withValues(alpha: 0.7),
+                  color: accentColor.withValues(alpha: 0.7),
                   size: HSizes.iconMd,
                 ),
                 onPressed: () =>
@@ -84,16 +88,14 @@ class _AuthFieldState extends State<AuthField> {
 
         // Unified Border Styling (Reduces redundancy)
         filled: true,
-        fillColor: HColors.white,
+        fillColor: fillColor,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 18,
           horizontal: 20,
         ),
-        border: _buildBorder(HColors.borderSecondary),
-        enabledBorder: _buildBorder(
-          HColors.borderSecondary.withValues(alpha: 0.5),
-        ),
-        focusedBorder: _buildBorder(HColors.primary),
+        border: _buildBorder(enabledBorderColor),
+        enabledBorder: _buildBorder(enabledBorderColor),
+        focusedBorder: _buildBorder(accentColor),
         errorBorder: _buildBorder(HColors.error),
         focusedErrorBorder: _buildBorder(HColors.error, width: 2.0),
       ),

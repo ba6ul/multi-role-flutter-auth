@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Your Clean Architecture / Core Imports
 import 'package:multi_role_flutter_auth/core/common/widgets/loader.dart';
 import 'package:multi_role_flutter_auth/core/config/auth_config.dart';
-import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/signup_screen.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/router/dashboard_router.dart';
@@ -12,12 +11,12 @@ import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/role_selection_page.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/hero_widget.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/social_buttons.dart';
+import 'package:multi_role_flutter_auth/features/dashboard/dashboard_routes.dart';
 
 // Utility / Theme Imports
 import 'package:multi_role_flutter_auth/utils/constants/color.dart';
 import 'package:multi_role_flutter_auth/utils/constants/sizes.dart';
 import 'package:multi_role_flutter_auth/utils/constants/text_strings.dart';
-import 'package:multi_role_flutter_auth/utils/helper/helper_funtion.dart';
 import 'package:multi_role_flutter_auth/utils/show_snackbar.dart';
 import 'package:multi_role_flutter_auth/utils/validators/validators.dart';
 
@@ -56,24 +55,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isdark = true;
     return Scaffold(
-      //backgroundColor: isdark ? HColors.black : HColors.primaryBackground,
-      //backgroundColor: HColors.primaryBackground,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
             showSnackBar(context, state.message);
           } else if (state is AuthSuccess) {
             // After successful login, navigate to Dashboard with the user's role
-            final userRole = UserRole.values.firstWhere(
-              (role) => role.name == state.user.role,
-              orElse: () => UserRole.admin,
-            );
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (_) => DashboardRouter(role: userRole),
+                builder: (_) => DashboardRouter(
+                  role: state.user.role,
+                  routes: appDashboardRoutes,
+                ),
               ),
               (route) => false,
             );
@@ -159,10 +154,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 // Forgot Password
                                 TextButton(
                                   onPressed: () {},
-                                  child: const Text(
+                                  child: Text(
                                     HTexts.forgetPasswordTitle,
                                     style: TextStyle(
-                                      color: HColors.primary,
+                                      color: Theme.of(context).brightness == Brightness.dark
+                                          ? HColors.accent
+                                          : HColors.primary,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),

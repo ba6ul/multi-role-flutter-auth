@@ -21,12 +21,3 @@ class GuestScreen extends StatelessWidget {
     );
   }
 }
-
-class SimpleAdminScreen extends StatelessWidget {
-  const SimpleAdminScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const GuestScreen(title: 'Fleet Manager Dashboard');
-  }
-}

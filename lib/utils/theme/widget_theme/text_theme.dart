@@ -27,6 +27,7 @@ class HTextTheme {
 
   /// Customizable Dark Text Theme
   static TextTheme darkTextTheme = TextTheme(
+    displayLarge: const TextStyle().copyWith(fontSize: 32.0, fontWeight: FontWeight.w900, color: HColors.light, letterSpacing: -1),
     headlineLarge: const TextStyle().copyWith(fontSize: 24.0, fontWeight: FontWeight.bold, color: HColors.light),
     headlineMedium: const TextStyle().copyWith(fontSize: 18.0, fontWeight: FontWeight.bold, color: HColors.light),
     headlineSmall: const TextStyle().copyWith(fontSize: 16.0, fontWeight: FontWeight.w600, color: HColors.light),

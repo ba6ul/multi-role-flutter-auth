@@ -8,7 +8,7 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
-  final Userprofiles user; // Use Entity here too
+  final UserProfile user;
   AuthSuccess(this.user);
 }
 
