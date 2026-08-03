@@ -19,6 +19,7 @@ abstract interface class AuthRemoteDataSource {
     required String password,
   });
   Future<UserModel?> getCurrentUserData();
+  Future<void> signOut();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -65,9 +66,28 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (response.user == null) {
         throw const ServerException('User is null!');
       }
+      if (response.session == null) {
+        // Email confirmation is required and pending - the account exists
+        // but there's no session yet, so this is not actually a successful
+        // login. Surface this distinctly instead of faking success.
+        throw const ServerException(
+          'Account created! Check your email to confirm your account before logging in.',
+        );
+      }
       // No user_profiles row exists yet at signup time (that's created by
       // ProfileSetupPage) — the role picked just now lives in auth metadata.
       return UserModel.fromAuthUser(response.user!);
+    } on AuthException catch (e) {
+      throw ServerException(e.message);
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    try {
+      await supabaseClient.auth.signOut();
     } on AuthException catch (e) {
       throw ServerException(e.message);
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/sign_out_button.dart';
 
 class SuperAdminScreen extends StatelessWidget {
   final String title;
@@ -12,6 +13,7 @@ class SuperAdminScreen extends StatelessWidget {
         title: Text(title.isEmpty ? 'Super Admin Dashboard' : title),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
+        actions: const [SignOutButton()],
       ),
       body: Center(
         child: Column(

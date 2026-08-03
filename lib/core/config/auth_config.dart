@@ -14,4 +14,7 @@ class AuthConfig {
   // Need workspace setup after profile completion
   static const bool allowSkipProfile = true; // Shows/hides the Skip button
 
+  // Social login is not wired up to real providers yet (see GitHub issues
+  // #21-#24) - keep hidden until it actually works.
+  static const bool showSocialLogin = false;
 }

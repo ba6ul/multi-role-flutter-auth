@@ -6,6 +6,7 @@ import 'package:multi_role_flutter_auth/core/usecase/usecase.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/user_role.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/usecase/current_user.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_login.dart';
+import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_sign_out.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_signup.dart';
 
 part 'auth_event.dart';
@@ -15,23 +16,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserSignUp _userSignUp;
   final UserLogin _userLogin;
   final CurrentUser _currentUser;
+  final UserSignOut _userSignOut;
   final AppUserCubit _appUserCubit;
-  
+
   AuthBloc({
     required UserSignUp userSignUp,
     required UserLogin userLogin,
     required CurrentUser currentUser,
+    required UserSignOut userSignOut,
     required AppUserCubit appUserCubit,
   }) : _userSignUp = userSignUp,
        _userLogin = userLogin,
        _currentUser = currentUser,
+       _userSignOut = userSignOut,
       _appUserCubit = appUserCubit,
        super(AuthInitial()) {
     on<AuthEvent>((_, emit) => emit(AuthLoading()));
     on<AuthSignup>(_onAuthSignUp);
     on<AuthLogin>(_onAuthLogin);
     on<AuthIsUserLoggedIn>(_isUserLoggedIn);
-   
+    on<AuthLogout>(_onAuthLogout);
+
   }
 
   void _isUserLoggedIn(
@@ -80,6 +85,14 @@ void _emitAuthSuccess(
   ) {
     _appUserCubit.updateUser(user);
     emit(AuthSuccess(user));
+  }
+
+  void _onAuthLogout(AuthLogout event, Emitter<AuthState> emit) async {
+    await _userSignOut(NoParams());
+    // Clear local state regardless of whether the network call succeeded -
+    // the user's intent is to be signed out on this device either way.
+    _appUserCubit.updateUser(null);
+    emit(AuthInitial());
   }
 
 }

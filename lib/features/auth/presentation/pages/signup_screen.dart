@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Your Architecture / Core Imports
 import 'package:multi_role_flutter_auth/core/common/widgets/loader.dart';
@@ -11,6 +10,7 @@ import 'package:multi_role_flutter_auth/features/auth/presentation/bloc/auth_blo
 import 'package:multi_role_flutter_auth/features/auth/presentation/pages/profile_setup_page.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/router/dashboard_router.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/auth_field.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/social_buttons.dart';
 import 'package:multi_role_flutter_auth/features/dashboard/dashboard_routes.dart';
 
 // Utility / Theme Imports
@@ -48,17 +48,24 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accentColor = isDark ? HColors.accent : HColors.primary;
+
     return Scaffold(
-      backgroundColor: HColors.primaryBackground,
+      // No explicit backgroundColor - inherit Theme.scaffoldBackgroundColor,
+      // which is already correctly set per light/dark theme. Hardcoding it
+      // here was the bug: it always stayed light even in dark mode, while
+      // AuthField (which does check brightness) switched to dark styling -
+      // dark-styled fields on a light page.
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         // Using a standard size for the back button to maintain alignment with the text below
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new,
-            color: HColors.primary,
+            color: accentColor,
             size: 22,
           ),
         ),
@@ -121,19 +128,24 @@ class _SignupScreenState extends State<SignupScreen> {
                       ],
 
                       // 3. HEADER SECTION
-                      const Text(
+                      Text(
                         "Create Account",
                         style: TextStyle(
                           fontSize: 34,
                           fontWeight: FontWeight.w900,
-                          color: HColors.primary,
+                          color: isDark ? HColors.light : HColors.primary,
                           letterSpacing: -1.2,
                         ),
                       ),
                       const SizedBox(height: HSizes.xs),
                       Text(
                         "Fill in the details below to set up your account.",
-                        style: TextStyle(color: Colors.grey[600], fontSize: 15),
+                        style: TextStyle(
+                          color: isDark
+                              ? HColors.light.withValues(alpha: 0.6)
+                              : Colors.grey[600],
+                          fontSize: 15,
+                        ),
                       ),
 
                       const SizedBox(height: HSizes.spaceBtwSections),
@@ -193,10 +205,15 @@ class _SignupScreenState extends State<SignupScreen> {
                       _buildSignupButton(),
 
                       // SOCIAL AUTH
-                      const SizedBox(height: HSizes.spaceBtwSections),
-                      _buildSocialDivider(),
-                      const SizedBox(height: HSizes.spaceBtwItems),
-                      _buildSocialButtons(),
+                      if (AuthConfig.showSocialLogin) ...[
+                        const SizedBox(height: HSizes.spaceBtwSections),
+                        SocialLoginSection(
+                          onGoogleTap: () {},
+                          onFacebookTap: () {},
+                          onGithubTap: () {},
+                          onGuestTap: () {},
+                        ),
+                      ],
 
                       // Extra bottom padding for scrollability
                       const SizedBox(height: HSizes.spaceBtwSections),
@@ -214,23 +231,26 @@ class _SignupScreenState extends State<SignupScreen> {
   // --- UI COMPONENTS ---
 
   Widget _buildRoleBadge() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accentColor = isDark ? HColors.accent : HColors.primary;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
       decoration: BoxDecoration(
-        color: HColors.primary.withOpacity(0.08),
+        color: accentColor.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: HColors.primary.withOpacity(0.1)),
+        border: Border.all(color: accentColor.withValues(alpha: 0.2)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(widget.selectedRole.icon, size: 14, color: HColors.primary),
+          Icon(widget.selectedRole.icon, size: 14, color: accentColor),
           const SizedBox(width: 8),
           Text(
             widget.selectedRole.displayName,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: HColors.primary,
+              color: accentColor,
               fontSize: 12,
             ),
           ),
@@ -240,6 +260,10 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Widget _buildLegalCheckbox() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accentColor = isDark ? HColors.accent : HColors.primary;
+    final bodyColor = isDark ? HColors.light : Colors.black87;
+
     return Row(
       children: [
         SizedBox(
@@ -247,7 +271,7 @@ class _SignupScreenState extends State<SignupScreen> {
           width: 24,
           child: Checkbox(
             value: _agreeToLegal,
-            activeColor: HColors.primary,
+            activeColor: accentColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),
@@ -258,13 +282,13 @@ class _SignupScreenState extends State<SignupScreen> {
         Expanded(
           child: RichText(
             text: TextSpan(
-              style: const TextStyle(color: Colors.black87, fontSize: 13),
+              style: TextStyle(color: bodyColor, fontSize: 13),
               children: [
                 const TextSpan(text: "I agree to the "),
                 TextSpan(
                   text: "Terms of Service",
-                  style: const TextStyle(
-                    color: HColors.primary,
+                  style: TextStyle(
+                    color: accentColor,
                     fontWeight: FontWeight.bold,
                   ),
                   recognizer: TapGestureRecognizer()..onTap = () {},
@@ -272,8 +296,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 const TextSpan(text: " and "),
                 TextSpan(
                   text: "Privacy Policy",
-                  style: const TextStyle(
-                    color: HColors.primary,
+                  style: TextStyle(
+                    color: accentColor,
                     fontWeight: FontWeight.bold,
                   ),
                   recognizer: TapGestureRecognizer()..onTap = () {},
@@ -287,6 +311,9 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Widget _buildNewsletterCheckbox() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accentColor = isDark ? HColors.accent : HColors.primary;
+
     return Row(
       children: [
         SizedBox(
@@ -294,7 +321,7 @@ class _SignupScreenState extends State<SignupScreen> {
           width: 24,
           child: Checkbox(
             value: _subscribeNewsletter,
-            activeColor: HColors.primary,
+            activeColor: accentColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),
@@ -302,9 +329,12 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         ),
         const SizedBox(width: HSizes.sm),
-        const Text(
+        Text(
           "I want to receive updates via newsletter",
-          style: TextStyle(fontSize: 13, color: Colors.black87),
+          style: TextStyle(
+            fontSize: 13,
+            color: isDark ? HColors.light : Colors.black87,
+          ),
         ),
       ],
     );
@@ -354,51 +384,4 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  Widget _buildSocialDivider() {
-    return Row(
-      children: [
-        const Expanded(child: Divider(thickness: 0.8)),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            "Or join with",
-            style: TextStyle(color: Colors.grey[500], fontSize: 13),
-          ),
-        ),
-        const Expanded(child: Divider(thickness: 0.8)),
-      ],
-    );
-  }
-
-  Widget _buildSocialButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _socialIconButton(FontAwesomeIcons.google, Colors.red, () {}),
-        const SizedBox(width: 25),
-        _socialIconButton(
-          FontAwesomeIcons.facebook,
-          const Color(0xFF1877F2),
-          () {},
-        ),
-        const SizedBox(width: 25),
-        _socialIconButton(FontAwesomeIcons.github, Colors.black, () {}),
-      ],
-    );
-  }
-
-  Widget _socialIconButton(IconData icon, Color color, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(100),
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.grey.withOpacity(0.25)),
-        ),
-        child: FaIcon(icon, color: color, size: 24),
-      ),
-    );
-  }
 }

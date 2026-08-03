@@ -9,6 +9,7 @@ import 'package:multi_role_flutter_auth/features/auth/data/repositories/auth_rep
 import 'package:multi_role_flutter_auth/features/auth/domain/repository/auth_repository.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/usecase/current_user.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_login.dart';
+import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_sign_out.dart';
 import 'package:multi_role_flutter_auth/features/auth/domain/usecase/user_signup.dart';
 import 'package:multi_role_flutter_auth/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -66,7 +67,8 @@ void _initAuth() {
   serviceLocator
     ..registerFactory(() => UserSignUp(serviceLocator()))
     ..registerFactory(() => UserLogin(serviceLocator()))
-    ..registerFactory(() => CurrentUser(serviceLocator()));
+    ..registerFactory(() => CurrentUser(serviceLocator()))
+    ..registerFactory(() => UserSignOut(serviceLocator()));
 
   // 5. Bloc
   serviceLocator.registerLazySingleton(
@@ -74,6 +76,7 @@ void _initAuth() {
       userSignUp: serviceLocator(),
       userLogin: serviceLocator(),
       currentUser: serviceLocator(),
+      userSignOut: serviceLocator(),
       appUserCubit: serviceLocator(), // This will work now
     ),
   );

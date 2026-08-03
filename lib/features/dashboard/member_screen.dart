@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_role_flutter_auth/features/auth/presentation/widgets/sign_out_button.dart';
 
 class MemberScreen extends StatelessWidget {
   final String title;
@@ -11,6 +12,7 @@ class MemberScreen extends StatelessWidget {
         title: Text(title.isEmpty ? 'Dashboard' : title),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
+        actions: const [SignOutButton()],
       ),
       body: const Center(
         child: Text(

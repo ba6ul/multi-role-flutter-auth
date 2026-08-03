@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 // Your Clean Architecture / Core Imports
 import 'package:multi_role_flutter_auth/core/common/widgets/loader.dart';
@@ -33,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _rememberMe = true;
 
   @override
   void dispose() {
@@ -51,6 +53,72 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     }
+  }
+
+  Future<void> _onForgotPasswordPressed() async {
+    final emailController = TextEditingController(text: _emailController.text.trim());
+    var isSending = false;
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (dialogContext, setDialogState) {
+            return AlertDialog(
+              title: const Text('Reset password'),
+              content: TextField(
+                controller: emailController,
+                autofocus: true,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  hintText: 'you@example.com',
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: isSending ? null : () => Navigator.pop(dialogContext),
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: isSending
+                      ? null
+                      : () async {
+                          final email = emailController.text.trim();
+                          if (HValidator.validateEmail(email) != null) {
+                            showSnackBar(context, 'Enter a valid email first');
+                            return;
+                          }
+
+                          setDialogState(() => isSending = true);
+                          try {
+                            await Supabase.instance.client.auth
+                                .resetPasswordForEmail(email);
+                            if (dialogContext.mounted) Navigator.pop(dialogContext);
+                            if (mounted) {
+                              showSnackBar(context, 'Password reset email sent to $email');
+                            }
+                          } catch (e) {
+                            setDialogState(() => isSending = false);
+                            if (mounted) {
+                              showSnackBar(context, 'Could not send reset email: $e');
+                            }
+                          }
+                        },
+                  child: isSending
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Text('Send reset link'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -144,8 +212,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Row(
                                   children: [
                                     Checkbox(
-                                      value: false,
-                                      onChanged: (value) {},
+                                      value: _rememberMe,
+                                      onChanged: (value) =>
+                                          setState(() => _rememberMe = value ?? true),
                                     ),
                                     const Text(HTexts.rememberMe),
                                   ],
@@ -153,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                 // Forgot Password
                                 TextButton(
-                                  onPressed: () {},
+                                  onPressed: _onForgotPasswordPressed,
                                   child: Text(
                                     HTexts.forgetPasswordTitle,
                                     style: TextStyle(
@@ -210,9 +279,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: HSizes.defaultSpace),
-
-                            SocialLoginSection(onGoogleTap: () {  }, onFacebookTap: () {  }, onGithubTap: () {  }, onGuestTap: () {  },)
+                            if (AuthConfig.showSocialLogin) ...[
+                              const SizedBox(height: HSizes.defaultSpace),
+                              SocialLoginSection(
+                                onGoogleTap: () {},
+                                onFacebookTap: () {},
+                                onGithubTap: () {},
+                                onGuestTap: () {},
+                              ),
+                            ],
                           ],
                         ),
                       ),
