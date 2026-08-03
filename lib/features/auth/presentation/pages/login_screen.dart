@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
@@ -56,7 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _onForgotPasswordPressed() async {
-    final emailController = TextEditingController(text: _emailController.text.trim());
+    final emailController = TextEditingController(
+      text: _emailController.text.trim(),
+    );
     var isSending = false;
 
     await showDialog<void>(
@@ -77,7 +80,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               actions: [
                 TextButton(
-                  onPressed: isSending ? null : () => Navigator.pop(dialogContext),
+                  onPressed: isSending
+                      ? null
+                      : () => Navigator.pop(dialogContext),
                   child: const Text('Cancel'),
                 ),
                 ElevatedButton(
@@ -94,14 +99,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             await Supabase.instance.client.auth
                                 .resetPasswordForEmail(email);
-                            if (dialogContext.mounted) Navigator.pop(dialogContext);
+                            if (dialogContext.mounted)
+                              Navigator.pop(dialogContext);
                             if (mounted) {
-                              showSnackBar(context, 'Password reset email sent to $email');
+                              showSnackBar(
+                                context,
+                                'Password reset email sent to $email',
+                              );
                             }
                           } catch (e) {
                             setDialogState(() => isSending = false);
                             if (mounted) {
-                              showSnackBar(context, 'Could not send reset email: $e');
+                              showSnackBar(
+                                context,
+                                'Could not send reset email: $e',
+                              );
                             }
                           }
                         },
@@ -129,6 +141,10 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is AuthFailure) {
             showSnackBar(context, state.message);
           } else if (state is AuthSuccess) {
+            // Lets the platform's password manager offer to save what was
+            // just entered - without this it never prompts, regardless of
+            // autofillHints being set on the fields.
+            TextInput.finishAutofillContext();
             // After successful login, navigate to Dashboard with the user's role
             Navigator.pushAndRemoveUntil(
               context,
@@ -151,7 +167,6 @@ class _LoginScreenState extends State<LoginScreen> {
           return SingleChildScrollView(
             child: Column(
               children: [
-
                 // Hero Section
                 const HeroWidget(),
 
@@ -168,127 +183,135 @@ class _LoginScreenState extends State<LoginScreen> {
                       constraints: const BoxConstraints(maxWidth: 450),
                       child: Form(
                         key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            
-                            // Sign In Text
-                            Text(
-                              HTexts.signIn,
-                              style: Theme.of(context).textTheme.displayLarge,
-                            ),
-
-                            const SizedBox(height: HSizes.spaceBtwSections),
-
-                            // Email Field
-                            AuthField(
-                              hintText: HTexts.email,
-                              labelText: HTexts.email,
-                              prefixIcon: Icons.alternate_email_rounded,
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              validator: HValidator.validateEmail,
-                            ),
-
-                            const SizedBox(height: HSizes.spaceBtwInputFields),
-
-                            // Password Field
-                            AuthField(
-                              hintText: HTexts.password,
-                              labelText: HTexts.password,
-                              prefixIcon: Icons.lock,
-                              controller: _passwordController,
-                              obscureText: true,
-                              validator: HValidator.validateLoginPassword,
-                              onFieldSubmitted: (_) => _onLoginPressed(),
-                            ),
-
-                            const SizedBox(height: HSizes.defaultSpace / 2),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-
-                                // Remember Me Checkbox
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      value: _rememberMe,
-                                      onChanged: (value) =>
-                                          setState(() => _rememberMe = value ?? true),
-                                    ),
-                                    const Text(HTexts.rememberMe),
-                                  ],
-                                ),
-
-                                // Forgot Password
-                                TextButton(
-                                  onPressed: _onForgotPasswordPressed,
-                                  child: Text(
-                                    HTexts.forgetPasswordTitle,
-                                    style: TextStyle(
-                                      color: Theme.of(context).brightness == Brightness.dark
-                                          ? HColors.accent
-                                          : HColors.primary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: HSizes.defaultSpace),
-                            
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: OutlinedButton(
-                                    onPressed: () {
-                                      if (AuthConfig.useRoleSelection) {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const RoleSelectionPage(),
-                                          ),
-                                        );
-                                      } else {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SignupScreen(
-                                                  selectedRole:
-                                                      AuthConfig.defaultRole,
-                                                ),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    child: const Text(HTexts.createAccount),
-                                  ),
-                                ),
-
-                                const SizedBox(
-                                  width: HSizes.spaceBtwInputFields,
-                                ),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: _onLoginPressed,
-                                    child: const Text(HTexts.signIn),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            if (AuthConfig.showSocialLogin) ...[
-                              const SizedBox(height: HSizes.defaultSpace),
-                              SocialLoginSection(
-                                onGoogleTap: () {},
-                                onFacebookTap: () {},
-                                onGithubTap: () {},
-                                onGuestTap: () {},
+                        child: AutofillGroup(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Sign In Text
+                              Text(
+                                HTexts.signIn,
+                                style: Theme.of(context).textTheme.displayLarge,
                               ),
+
+                              const SizedBox(height: HSizes.spaceBtwSections),
+
+                              // Email Field
+                              AuthField(
+                                hintText: HTexts.email,
+                                labelText: HTexts.email,
+                                prefixIcon: Icons.alternate_email_rounded,
+                                controller: _emailController,
+                                keyboardType: TextInputType.emailAddress,
+                                autofillHints: const [AutofillHints.email],
+                                validator: HValidator.validateEmail,
+                              ),
+
+                              const SizedBox(
+                                height: HSizes.spaceBtwInputFields,
+                              ),
+
+                              // Password Field
+                              AuthField(
+                                hintText: HTexts.password,
+                                labelText: HTexts.password,
+                                prefixIcon: Icons.lock,
+                                controller: _passwordController,
+                                obscureText: true,
+                                autofillHints: const [AutofillHints.password],
+                                validator: HValidator.validateLoginPassword,
+                                onFieldSubmitted: (_) => _onLoginPressed(),
+                              ),
+
+                              const SizedBox(height: HSizes.defaultSpace / 2),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // Remember Me Checkbox
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                        value: _rememberMe,
+                                        onChanged: (value) => setState(
+                                          () => _rememberMe = value ?? true,
+                                        ),
+                                      ),
+                                      const Text(HTexts.rememberMe),
+                                    ],
+                                  ),
+
+                                  // Forgot Password
+                                  TextButton(
+                                    onPressed: _onForgotPasswordPressed,
+                                    child: Text(
+                                      HTexts.forgetPasswordTitle,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? HColors.accent
+                                            : HColors.primary,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(height: HSizes.defaultSpace),
+
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: OutlinedButton(
+                                      onPressed: () {
+                                        if (AuthConfig.useRoleSelection) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const RoleSelectionPage(),
+                                            ),
+                                          );
+                                        } else {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const SignupScreen(
+                                                    selectedRole:
+                                                        AuthConfig.defaultRole,
+                                                  ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      child: const Text(HTexts.createAccount),
+                                    ),
+                                  ),
+
+                                  const SizedBox(
+                                    width: HSizes.spaceBtwInputFields,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: _onLoginPressed,
+                                      child: const Text(HTexts.signIn),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              if (AuthConfig.showSocialLogin) ...[
+                                const SizedBox(height: HSizes.defaultSpace),
+                                SocialLoginSection(
+                                  onGoogleTap: () {},
+                                  onFacebookTap: () {},
+                                  onGithubTap: () {},
+                                  onGuestTap: () {},
+                                ),
+                              ],
                             ],
-                          ],
+                          ),
                         ),
                       ),
                     ),

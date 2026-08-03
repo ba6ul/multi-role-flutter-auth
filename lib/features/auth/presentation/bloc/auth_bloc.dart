@@ -87,12 +87,16 @@ void _emitAuthSuccess(
     emit(AuthSuccess(user));
   }
 
-  void _onAuthLogout(AuthLogout event, Emitter<AuthState> emit) async {
-    await _userSignOut(NoParams());
-    // Clear local state regardless of whether the network call succeeded -
-    // the user's intent is to be signed out on this device either way.
+  void _onAuthLogout(AuthLogout event, Emitter<AuthState> emit) {
+    // Clear local state immediately rather than waiting on the network
+    // sign-out call - if that request is slow or hangs (flaky connection,
+    // wireless debugging, etc.), the UI would otherwise sit on AuthLoading
+    // forever. The user's intent to be signed out on this device is
+    // satisfied locally regardless of what the network call does.
     _appUserCubit.updateUser(null);
     emit(AuthInitial());
+    // Best-effort remote sign-out — fire and forget, not on the critical path.
+    _userSignOut(NoParams());
   }
 
 }

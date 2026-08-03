@@ -12,8 +12,9 @@ class AuthField extends StatefulWidget {
   final bool obscureText;
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
+  final Iterable<String>? autofillHints;
 
-  const AuthField( {
+  const AuthField({
     required this.hintText,
     required this.labelText,
     required this.prefixIcon,
@@ -23,6 +24,7 @@ class AuthField extends StatefulWidget {
     this.obscureText = false,
     this.textInputAction,
     this.onFieldSubmitted,
+    this.autofillHints,
     super.key,
   });
 
@@ -38,23 +40,27 @@ class _AuthFieldState extends State<AuthField> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final textColor = isDark ? HColors.light : HColors.textPrimary;
-    final labelColor = isDark ? HColors.light.withValues(alpha: 0.7) : HColors.textSecondary.withValues(alpha: 0.8);
-    final hintColor = isDark ? HColors.light.withValues(alpha: 0.4) : HColors.textSecondary.withValues(alpha: 0.5);
+    final labelColor = isDark
+        ? HColors.light.withValues(alpha: 0.7)
+        : HColors.textSecondary.withValues(alpha: 0.8);
+    final hintColor = isDark
+        ? HColors.light.withValues(alpha: 0.4)
+        : HColors.textSecondary.withValues(alpha: 0.5);
     // Gold accent in dark mode reads far better against the near-black
     // background than the indigo primary, which nearly disappears there.
     final accentColor = isDark ? HColors.accent : HColors.primary;
     final fillColor = isDark ? HColors.darkContainer : HColors.white;
-    final enabledBorderColor = isDark ? Colors.white.withValues(alpha: 0.15) : HColors.borderSecondary.withValues(alpha: 0.5);
+    final enabledBorderColor = isDark
+        ? Colors.white.withValues(alpha: 0.15)
+        : HColors.borderSecondary.withValues(alpha: 0.5);
 
     return TextFormField(
       controller: widget.controller,
-      style: TextStyle(
-        fontSize: HSizes.fontSizeMd,
-        color: textColor,
-      ),
+      style: TextStyle(fontSize: HSizes.fontSizeMd, color: textColor),
       keyboardType: widget.keyboardType ?? TextInputType.text,
       textInputAction: widget.textInputAction ?? TextInputAction.next,
       obscureText: widget.obscureText && !_isPasswordVisible,
+      autofillHints: widget.autofillHints,
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,
       cursorColor: accentColor,
