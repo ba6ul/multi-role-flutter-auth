@@ -1,4 +1,4 @@
-import '../domain/user_role.dart';
+import 'package:flutter_auth_kit/flutter_auth_kit.dart';
 
 class AuthConfig {
   // Role Selection Config

@@ -2,8 +2,8 @@
 
 import 'package:fpdart/fpdart.dart';
 import '../../domain/entities/user_profile.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/error/network_exceptions.dart';
+import '../../../core/error/failures.dart';
+import '../../../core/error/network_exceptions.dart';
 import '../datasource/auth_remote_data_source.dart';
 import '../model/user_model.dart';
 import '../../domain/repository/auth_repository.dart';

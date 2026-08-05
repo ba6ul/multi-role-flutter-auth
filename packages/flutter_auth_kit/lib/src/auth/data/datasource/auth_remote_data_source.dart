@@ -1,5 +1,5 @@
 import '../../config/supabase_schema.dart';
-import '../../../../core/error/network_exceptions.dart';
+import '../../../core/error/network_exceptions.dart';
 import '../model/user_model.dart';
 import '../../domain/user_role.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

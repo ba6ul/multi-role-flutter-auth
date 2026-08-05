@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import '../cubit/app_user_cubit.dart';
 import '../../domain/entities/user_profile.dart';
-import '../../../../core/usecase/usecase.dart';
+import '../../../core/usecase/usecase.dart';
 import '../../domain/user_role.dart';
 import '../../domain/usecase/current_user.dart';
 import '../../domain/usecase/delete_account.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_auth_kit/flutter_auth_kit.dart';
 import '../../../../common/widgets/loader.dart';
-import '../bloc/auth_bloc.dart';
 import 'login_screen.dart';
 import '../router/dashboard_router.dart';
 import '../../../dashboard/dashboard_routes.dart';

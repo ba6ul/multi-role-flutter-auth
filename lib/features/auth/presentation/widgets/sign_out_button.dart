@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/auth_bloc.dart';
+import 'package:flutter_auth_kit/flutter_auth_kit.dart';
 import '../pages/auth_gate.dart';
 
 /// Drop into a dashboard's AppBar actions. Dispatches AuthLogout and
