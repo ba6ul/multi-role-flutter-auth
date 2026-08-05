@@ -2,41 +2,20 @@
 
 import 'package:fpdart/fpdart.dart';
 import '../../domain/entities/user_profile.dart';
-import '../../../../core/constants/constants.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/error/network_exceptions.dart';
-import '../../../../core/network/connection_checker.dart';
 import '../datasource/auth_remote_data_source.dart';
-import '../model/user_model.dart';
 import '../../domain/repository/auth_repository.dart';
 import '../../domain/user_role.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
 
-  final ConnectionChecker connectionChecker;
-  const AuthRepositoryImpl(this.remoteDataSource, this.connectionChecker);
+  const AuthRepositoryImpl(this.remoteDataSource);
 
   @override
   Future<Either<Failure, UserProfile>> currentUser() async {
     try {
-      if (!await (connectionChecker.isConnected)) {
-        final session = remoteDataSource.currentUserSession;
-
-        if (session == null) {
-          return left(Failure('User not logged in!'));
-        }
-
-        return right(
-          UserModel(
-            id: session.user.id,
-            email: session.user.email ?? '',
-            name: '',
-            username: '',
-            role: UserRole.guest,
-          ),
-        );
-      }
       final user = await remoteDataSource.getCurrentUserData();
       if (user == null) {
         return left(Failure('User not logged in!'));
@@ -92,13 +71,20 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, void>> deleteAccount() async {
+    try {
+      await remoteDataSource.deleteAccount();
+      return right(null);
+    } on NetworkException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
   Future<Either<Failure, UserProfile>> _getUser(
     Future<UserProfile> Function() fn,
   ) async {
     try {
-      if (!await (connectionChecker.isConnected)) {
-        return left(Failure(Constants.noConnectionErrorMessage));
-      }
       final user = await fn();
 
       return right(user);

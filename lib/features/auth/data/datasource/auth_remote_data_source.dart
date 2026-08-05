@@ -20,6 +20,7 @@ abstract interface class AuthRemoteDataSource {
   });
   Future<UserModel?> getCurrentUserData();
   Future<void> signOut();
+  Future<void> deleteAccount();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -103,6 +104,43 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return null;
       }
       return await _fetchProfile(session.user);
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    try {
+      final userId = currentUserSession?.user.id;
+      if (userId == null) {
+        throw const ServerException('User is null!');
+      }
+      // Deleting the auth.users row needs the service role, which the
+      // client never has - the Edge Function does that server-side.
+      final response = await supabaseClient.functions.invoke(
+        SupabaseSchema.deleteAccountFunction,
+      );
+      if (response.status != 200) {
+        throw ServerException(
+          'Failed to delete account (${response.status}).',
+        );
+      }
+      // Best-effort: schema.sql's user_profiles.user_id has ON DELETE
+      // CASCADE, so this is normally already gone. Only matters for a
+      // host project whose schema doesn't cascade - swallow errors since
+      // the account itself is already deleted at this point either way.
+      try {
+        await supabaseClient
+            .from(SupabaseSchema.userProfilesTable)
+            .delete()
+            .eq(SupabaseSchema.userIdColumn, userId);
+      } catch (_) {}
+      await supabaseClient.auth.signOut();
+    } on AuthException catch (e) {
+      throw ServerException(e.message);
+    } on ServerException {
+      rethrow;
     } catch (e) {
       throw ServerException(e.toString());
     }
