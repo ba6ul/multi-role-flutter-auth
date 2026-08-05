@@ -9,4 +9,9 @@ class SupabaseSchema {
   static const String customUserIdColumn = 'custom_user_id';
   static const String roleColumn = 'role';
   static const String profileCompletedColumn = 'profile_completed';
+
+  /// Edge Function that deletes the auth.users row (requires the service
+  /// role, so this can't be done from the client directly). Deploy it
+  /// under this name, or change this constant to match.
+  static const String deleteAccountFunction = 'delete-account';
 }
