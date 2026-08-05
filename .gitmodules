@@ -1,0 +1,3 @@
+[submodule "packages/flutter_auth_kit"]
+	path = packages/flutter_auth_kit
+	url = https://github.com/ba6ul/flutter_auth_kit.git
