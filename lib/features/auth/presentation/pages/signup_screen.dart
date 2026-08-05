@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Your Architecture / Core Imports
-import '../../../../core/common/widgets/loader.dart';
+import '../../../../common/widgets/loader.dart';
 import '../../config/auth_config.dart';
 import '../../domain/user_role.dart';
 import '../bloc/auth_bloc.dart';
@@ -15,7 +15,7 @@ import '../widgets/social_buttons.dart';
 import '../../../dashboard/dashboard_routes.dart';
 
 // Utility / Theme Imports
-import '../../../../utils/constants/color.dart';
+import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/show_snackbar.dart';
 import '../../../../utils/validators/validators.dart';
@@ -70,6 +70,12 @@ class _SignupScreenState extends State<SignupScreen> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
+            // Tell the platform not to offer saving these credentials - the
+            // OS autofill save-prompt fires on form submission regardless of
+            // whether signup actually succeeded (e.g. email already taken,
+            // confirmation pending), and its popup can visually steal the
+            // moment the snackbar below would otherwise be seen.
+            TextInput.finishAutofillContext(shouldSave: false);
             showSnackBar(context, state.message);
           } else if (state is AuthSuccess) {
             // Lets the platform's password manager offer to save what was

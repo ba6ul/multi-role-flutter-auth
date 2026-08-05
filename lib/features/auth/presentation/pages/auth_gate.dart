@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/common/widgets/loader.dart';
+import '../../../../common/widgets/loader.dart';
 import '../bloc/auth_bloc.dart';
 import 'login_screen.dart';
 import '../router/dashboard_router.dart';
@@ -25,20 +25,36 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
+    // A one-time decision made imperatively via Navigator, not a reactive
+    // BlocBuilder that keeps swapping the whole screen on every subsequent
+    // AuthBloc state change. LoginScreen has its own BlocConsumer and
+    // manages its own login attempts - if AuthGate stayed mounted and kept
+    // rebuilding around it (e.g. on the AuthLoading every login attempt
+    // emits), it would tear LoginScreen down mid-attempt, and LoginScreen's
+    // listener would never live long enough to see the eventual
+    // AuthFailure/AuthSuccess. pushAndRemoveUntil below removes AuthGate
+    // from the stack entirely once it's made this one decision, so only
+    // LoginScreen's (or DashboardRouter's) own listener reacts after that.
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
         if (state is AuthSuccess) {
-          return DashboardRouter(
-            role: state.user.role,
-            routes: appDashboardRoutes,
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (_) => DashboardRouter(
+                role: state.user.role,
+                routes: appDashboardRoutes,
+              ),
+            ),
+            (route) => false,
+          );
+        } else if (state is AuthFailure) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => const LoginScreen()),
+            (route) => false,
           );
         }
-        if (state is AuthFailure) {
-          return const LoginScreen();
-        }
-        // AuthInitial or AuthLoading: the session check hasn't resolved yet.
-        return const Scaffold(body: Loader());
       },
+      child: const Scaffold(body: Loader()),
     );
   }
 }

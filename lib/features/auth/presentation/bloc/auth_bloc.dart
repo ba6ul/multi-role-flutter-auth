@@ -18,6 +18,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CurrentUser _currentUser;
   final UserSignOut _userSignOut;
   final AppUserCubit _appUserCubit;
+  // Optional host-app hook, run on logout. This module is reused across
+  // projects with different local data to clean up (or none at all), so it
+  // deliberately doesn't know what this does — each host app's own DI
+  // wiring supplies (or omits) it. Keeps this file identical across those
+  // projects; only the host app's own setup code differs.
+  final Future<void> Function()? _onLogout;
 
   AuthBloc({
     required UserSignUp userSignUp,
@@ -25,11 +31,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required CurrentUser currentUser,
     required UserSignOut userSignOut,
     required AppUserCubit appUserCubit,
+    Future<void> Function()? onLogout,
   }) : _userSignUp = userSignUp,
        _userLogin = userLogin,
        _currentUser = currentUser,
        _userSignOut = userSignOut,
        _appUserCubit = appUserCubit,
+       _onLogout = onLogout,
        super(AuthInitial()) {
     on<AuthEvent>((_, emit) => emit(AuthLoading()));
     on<AuthSignup>(_onAuthSignUp);
@@ -93,5 +101,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthInitial());
     // Best-effort remote sign-out — fire and forget, not on the critical path.
     _userSignOut(NoParams());
+    // Host-app cleanup hook — same fire-and-forget treatment; a slow local
+    // clear shouldn't block the UI any more than the network call should.
+    _onLogout?.call();
   }
 }

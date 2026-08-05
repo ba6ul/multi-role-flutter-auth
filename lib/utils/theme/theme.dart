@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/color.dart';
+import '../constants/colors.dart';
 import 'widget_theme/checkbox_theme.dart';
 import 'widget_theme/elevetad_button.dart';
 import 'widget_theme/text_theme.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../utils/constants/color.dart';
+import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 
 class AuthField extends StatefulWidget {

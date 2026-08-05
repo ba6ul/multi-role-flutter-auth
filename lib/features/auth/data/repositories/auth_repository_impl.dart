@@ -3,7 +3,7 @@
 import 'package:fpdart/fpdart.dart';
 import '../../domain/entities/user_profile.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/error/failure.dart';
+import '../../../../core/error/failures.dart';
 import '../../../../core/error/network_exceptions.dart';
 import '../../../../core/network/connection_checker.dart';
 import '../datasource/auth_remote_data_source.dart';

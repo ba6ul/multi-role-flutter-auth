@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 // Your Clean Architecture / Core Imports
-import '../../../../core/common/widgets/loader.dart';
+import '../../../../common/widgets/loader.dart';
 import '../../config/auth_config.dart';
 import '../bloc/auth_bloc.dart';
 import 'signup_screen.dart';
@@ -16,7 +16,7 @@ import '../widgets/social_buttons.dart';
 import '../../../dashboard/dashboard_routes.dart';
 
 // Utility / Theme Imports
-import '../../../../utils/constants/color.dart';
+import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/constants/text_strings.dart';
 import '../../../../utils/show_snackbar.dart';
@@ -139,6 +139,12 @@ class _LoginScreenState extends State<LoginScreen> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
+            // Tell the platform not to offer saving these credentials - the
+            // OS autofill save-prompt (Bitwarden, Google Password Manager,
+            // etc.) fires on form submission regardless of whether login
+            // actually succeeded, and its popup can visually steal the
+            // moment the snackbar below would otherwise be seen.
+            TextInput.finishAutofillContext(shouldSave: false);
             showSnackBar(context, state.message);
           } else if (state is AuthSuccess) {
             // Lets the platform's password manager offer to save what was

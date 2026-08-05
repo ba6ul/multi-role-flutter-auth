@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/color.dart';
+import '../../constants/colors.dart';
 
 /// Custom Class for light & Dark Text Themes
 class HTextTheme {
