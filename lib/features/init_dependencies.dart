@@ -1,16 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'auth/presentation/cubit/app_user_cubit.dart';
+import 'package:flutter_auth_kit/flutter_auth_kit.dart';
 import '../core/config/api_keys.dart';
-import 'auth/data/datasource/auth_remote_data_source.dart';
-import 'auth/data/repositories/auth_repository_impl.dart';
-import 'auth/domain/repository/auth_repository.dart';
-import 'auth/domain/usecase/current_user.dart';
-import 'auth/domain/usecase/delete_account.dart';
-import 'auth/domain/usecase/user_login.dart';
-import 'auth/domain/usecase/user_sign_out.dart';
-import 'auth/domain/usecase/user_signup.dart';
-import 'auth/presentation/bloc/auth_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final serviceLocator = GetIt.instance;

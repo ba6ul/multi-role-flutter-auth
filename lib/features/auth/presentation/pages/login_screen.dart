@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
+import 'package:flutter_auth_kit/flutter_auth_kit.dart';
 
 // Your Clean Architecture / Core Imports
 import '../../../../common/widgets/loader.dart';
 import '../../config/auth_config.dart';
-import '../bloc/auth_bloc.dart';
 import 'signup_screen.dart';
 import '../router/dashboard_router.dart';
 import '../widgets/auth_field.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../auth/domain/user_role.dart';
+import 'package:flutter_auth_kit/flutter_auth_kit.dart';
 import 'admin_screen.dart';
 import 'guest_screen.dart';
 import 'lead_screen.dart';

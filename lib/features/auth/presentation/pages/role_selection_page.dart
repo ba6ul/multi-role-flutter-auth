@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_kit/flutter_auth_kit.dart';
 import 'signup_screen.dart';
-import '../../domain/user_role.dart';
 import 'profile_setup_page.dart';
 
 /// role_selection_page.dart

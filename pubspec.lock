@@ -166,6 +166,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_auth_kit:
+    dependency: "direct main"
+    description:
+      path: "packages/flutter_auth_kit"
+      relative: true
+    source: path
+    version: "0.0.1"
   flutter_bloc:
     dependency: "direct main"
     description:
