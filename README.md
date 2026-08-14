@@ -1,5 +1,29 @@
 # multi-role-flutter-auth
 
+## 🧩 Architecture
+
+This app isn't hand-built from scratch - it's assembled from a couple of reusable pieces:
+
+- **[flutter_auth_kit](https://github.com/ba6ul/flutter_auth_kit)** - the actual auth logic (bloc, roles, repository, Supabase calls). A real dependency, wired in here as a git submodule at `packages/flutter_auth_kit`. Deliberately has no UI.
+- **[haripin_bricks](https://github.com/ba6ul/haripin_bricks)** - [Mason](https://github.com/felangel/mason) bricks that scaffold the reusable, non-auth-specific foundation. Not a dependency - each one generates plain files into the project once, and from then on they're just app code you edit freely:
+  - `haripin_core` → colors, sizes, text strings, validators, helpers, API-key config
+  - `haripin_uikit` → theme + widget themes, loading spinner
+  - `auth_ui` → login/signup/profile-setup screens, the auth gate, dashboard router - the UI layer that sits on top of `flutter_auth_kit`
+
+Starting a new app with the same foundation: `mason make haripin_core`, `mason make haripin_uikit`, `mason make auth_ui`, then add `flutter_auth_kit` as a dependency.
+
+### Cloning this repo
+
+`flutter_auth_kit` is a git submodule, so a plain `git clone` leaves `packages/flutter_auth_kit/` empty:
+
+```sh
+git clone --recurse-submodules https://github.com/ba6ul/multi-role-flutter-auth.git
+# or, after a normal clone:
+git submodule update --init
+```
+
+---
+
 # 📸 Mobile Screenshots
 <table> <tr> <td> 
   <img src=".github/Screenshot_20251223-184224.png" width="220" /> </td> <td> 
